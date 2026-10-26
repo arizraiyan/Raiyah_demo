@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My orders — Jay Mataji Creation</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/luxe.css">
+<style>
+.order{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  margin-bottom:22px;overflow:hidden;}
+.o-head{display:flex;gap:26px;padding:20px 26px;background:var(--surface-2);
+  border-bottom:1px solid var(--line);flex-wrap:wrap;align-items:center;}
+.o-meta .k{font-family:var(--f-mono);font-size:8.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:4px;}
+.o-meta .v{font-size:13.5px;font-weight:600;}
+.o-meta .v.id{font-family:var(--f-mono);font-size:12.5px;color:var(--gold);}
+.o-right{margin-left:auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.o-body{padding:22px 26px;}
+.o-item{display:flex;gap:15px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);}
+.o-item:last-child{border:none;}
+.o-item img{width:62px;height:78px;object-fit:cover;border-radius:2px;flex:none;background:var(--surface-2);}
+.o-item .t{flex:1;min-width:0;}
+.o-item b{font-size:14px;display:block;margin-bottom:3px;}
+.o-item small{font-family:var(--f-mono);font-size:10px;color:var(--ink-faint);letter-spacing:.08em;}
+
+/* live tracker */
+.track{display:flex;padding:26px 26px 8px;border-top:1px solid var(--line);background:var(--bg-alt);}
+.tstep{flex:1;position:relative;text-align:center;padding-top:26px;}
+.tstep::before{content:"";position:absolute;top:7px;left:50%;width:100%;height:2px;
+  background:var(--line);z-index:0;}
+.tstep:last-child::before{display:none;}
+.tstep .dot{position:absolute;top:0;left:50%;transform:translateX(-50%);width:15px;height:15px;
+  border-radius:50%;background:var(--bg-alt);border:2px solid var(--line-2);z-index:2;}
+.tstep.done .dot{background:var(--ok);border-color:var(--ok);}
+.tstep.done::before{background:var(--ok);}
+.tstep.now .dot{background:var(--gold);border-color:var(--gold);
+  box-shadow:0 0 0 5px rgba(168,132,47,.22);animation:live 2s infinite;}
+.tstep b{font-family:var(--f-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  display:block;color:var(--ink-faint);}
+.tstep.done b,.tstep.now b{color:var(--ink);}
+.tstep small{font-size:10px;color:var(--ink-faint);display:block;margin-top:3px;}
+.o-foot{display:flex;justify-content:space-between;align-items:center;gap:16px;
+  padding:18px 26px;border-top:1px solid var(--line);flex-wrap:wrap;}
+.o-addr{font-size:12.5px;color:var(--ink-soft);max-width:52ch;line-height:1.65;}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px;}
+.ftab{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+  padding:9px 17px;border:1px solid var(--line-2);border-radius:22px;cursor:pointer;
+  background:var(--surface);transition:.25s;}
+.ftab.on{background:var(--btn-bg);color:var(--btn-fg);border-color:var(--btn-bg);}
+.ftab:hover{border-color:var(--gold);}
+.cancelled{opacity:.62;}
+@media(max-width:760px){
+  .track{flex-direction:column;gap:14px;padding:22px;}
+  .tstep{text-align:left;padding:0 0 0 28px;}
+  .tstep::before{top:16px;left:7px;width:2px;height:100%;}
+  .tstep .dot{left:0;transform:none;top:2px;}
+  .o-head{gap:16px;padding:16px;}
+  .o-body,.o-foot{padding:16px;}
+}
+</style>
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="wrap">
+    <div class="crumbs"><a href="index.html">Home</a> / <a href="profile.html">Profile</a> / My orders</div>
+    <h1 class="display-l">My orders</h1>
+    <p class="lede" style="margin-top:14px;display:flex;align-items:center;gap:10px">
+      <span class="live-dot"></span> Status updates appear here the moment our team changes them.</p>
+  </div>
+</section>
+
+<section class="section tight wrap">
+  <div class="tabs" id="tabs"></div>
+  <div id="list"></div>
+</section>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/brand.js"></script>
+<script src="assets/js/qr.js"></script>
+<script src="assets/js/carousel.js"></script>
+<script src="assets/js/payments.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/fx.js"></script>
+<script>
+JMC.boot('');
+if (!JMC.requireAuth('orders.html')) throw new Error('redirecting');
+
+let filter = 'all';
+const FLOW = ['Placed','Confirmed','Packed','Shipped','Delivered'];
+const NOTE = { Placed:'We have your order', Confirmed:'Karigar assigned',
+  Packed:'Boxed and labelled', Shipped:'On the way', Delivered:'Handed to you' };
+
+function render(){
+  const mine = JMC.myOrders();
+  const counts = { all:mine.length, active:mine.filter(o => !['Delivered','Cancelled'].includes(o.status)).length,
+    Delivered:mine.filter(o => o.status==='Delivered').length, Cancelled:mine.filter(o => o.status==='Cancelled').length };
+  document.getElementById('tabs').innerHTML = [
+    ['all','All orders'],['active','In progress'],['Delivered','Delivered'],['Cancelled','Cancelled']
+  ].map(([k,l]) => `<button class="ftab ${filter===k?'on':''}" data-f="${k}">${l} (${counts[k]})</button>`).join('');
+  document.querySelectorAll('[data-f]').forEach(b => b.onclick = () => { filter = b.dataset.f; render(); });
+
+  let list = mine;
+  if (filter === 'active') list = mine.filter(o => !['Delivered','Cancelled'].includes(o.status));
+  else if (filter !== 'all') list = mine.filter(o => o.status === filter);
+
+  if (!list.length) {
+    document.getElementById('list').innerHTML = `<div class="empty-state"><i class='bx bx-package'></i>
+      <h4>${filter==='all'?'No orders yet':'Nothing in this list'}</h4>
+      <p>${filter==='all'?'Everything you buy shows up here, with live status all the way to your door.':'Try another tab above.'}</p>
+      <a href="shop.html" class="btn btn-solid">Browse the collection</a></div>`;
+    return;
+  }
+
+  const payNames = { cod:'Cash on delivery', upi:'UPI', card:'Card', bank:'Bank transfer' };
+  document.getElementById('list').innerHTML = list.map(o => {
+    const cancelled = o.status === 'Cancelled';
+    const idx = FLOW.indexOf(o.status);
+    const when = s => { const t = o.timeline.find(x => x.status === s);
+      return t ? new Date(t.at).toLocaleDateString('en-IN',{day:'numeric',month:'short'}) : ''; };
+    return `<article class="order ${cancelled?'cancelled':''}">
+      <div class="o-head">
+        <div class="o-meta"><span class="k">Order</span><span class="v id">${o.id}</span></div>
+        <div class="o-meta"><span class="k">Placed on</span><span class="v">${new Date(o.createdAt).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</span></div>
+        <div class="o-meta"><span class="k">Total</span><span class="v">${JMC.rs(o.total)}</span></div>
+        <div class="o-meta"><span class="k">Payment</span><span class="v">${payNames[o.payment]||o.payment}</span></div>
+        <div class="o-right">
+          <span class="badge ${cancelled?'bad':o.status==='Delivered'?'ok':'info'}">
+            ${!cancelled && o.status!=='Delivered' ? '<span class="live-dot"></span>' : ''} ${o.status}</span>
+        </div>
+      </div>
+      <div class="o-body">
+        ${o.items.map(i => `<div class="o-item">
+          <img src="assets/img/${i.img}-960.jpg" alt="${JMC.esc(i.name)}">
+          <div class="t"><b><a href="product.html?sku=${i.sku}">${JMC.esc(i.name)}</a></b>
+            <small>${i.sku} · Size ${i.size} · Qty ${i.qty}</small></div>
+          <b style="font-family:var(--f-mono);font-size:14px">${JMC.rs(i.price*i.qty)}</b>
+        </div>`).join('')}
+      </div>
+      ${ cancelled ? `<div class="track" style="justify-content:center;padding:22px">
+          <span class="badge bad"><i class='bx bx-x-circle'></i> This order was cancelled on
+          ${new Date(o.timeline[o.timeline.length-1].at).toLocaleDateString('en-IN',{day:'numeric',month:'short'})}</span></div>`
+        : `<div class="track">${FLOW.map((s,i) => `
+            <div class="tstep ${i<idx?'done':i===idx?'now':''}">
+              <span class="dot"></span><b>${s}</b><small>${when(s) || NOTE[s]}</small></div>`).join('')}</div>` }
+      <div class="o-foot">
+        <div class="o-addr"><i class='bx bx-map' style="color:var(--gold)"></i>
+          ${JMC.esc(o.address.name)}, ${JMC.esc(o.address.line1)}, ${JMC.esc(o.address.city)},
+          ${JMC.esc(o.address.state)} — ${JMC.esc(o.address.pin)} · ${JMC.esc(o.address.phone)}</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          ${ ['Placed','Confirmed'].includes(o.status)
+            ? `<button class="btn btn-line btn-sm" data-cancel="${o.id}" style="border-color:var(--bad);color:var(--bad)">Cancel order</button>` : '' }
+          ${ o.status === 'Delivered'
+            ? `<a href="product.html?sku=${o.items[0].sku}" class="btn btn-line btn-sm">Write a review</a>` : '' }
+          <button class="btn btn-solid btn-sm" data-again="${o.id}">Order again</button>
+        </div>
+      </div>
+    </article>`;
+  }).join('');
+
+  document.querySelectorAll('[data-cancel]').forEach(b => b.onclick = () => {
+    if (!confirm('Cancel this order? If it is already with the karigar we will call you.')) return;
+    JMC.setOrderStatus(b.dataset.cancel, 'Cancelled');
+    JMC.toast('Order cancelled'); render();
+  });
+  document.querySelectorAll('[data-again]').forEach(b => b.onclick = () => {
+    const o = JMC.orders().find(x => x.id === b.dataset.again);
+    o.items.forEach(i => JMC.addToCart(i.sku, i.qty, i.size));
+    JMC.openDrawer();
+  });
+}
+
+/* real-time: admin flips a status → this page updates with no refresh */
+window.onJMCLive = key => { if (key === JMC.K.orders) render(); };
+render();
+JMC.renderFooter();
+</script>
+</body>
+</html>

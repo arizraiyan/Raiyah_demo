@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Create an account — Jay Mataji Creation</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/luxe.css">
+<style>
+.auth{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 76px);}
+.auth-art{position:relative;overflow:hidden;background:var(--surface-2);}
+.auth-art img{width:100%;height:100%;object-fit:cover;}
+.auth-art::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(200deg,rgba(20,10,22,.25),rgba(14,107,107,.62));}
+.auth-perks{position:absolute;left:52px;right:52px;bottom:52px;z-index:2;color:#fff;}
+.auth-perks .eyebrow{color:#E4C879;}.auth-perks .eyebrow::before{background:#E4C879;}
+.auth-perks ul{list-style:none;margin-top:22px;}
+.auth-perks li{display:flex;gap:13px;align-items:flex-start;margin-bottom:16px;
+  font-size:14.5px;color:rgba(255,255,255,.9);line-height:1.6;}
+.auth-perks i{color:#E4C879;font-size:20px;flex:none;}
+.auth-form{display:flex;align-items:center;justify-content:center;padding:56px 40px;}
+.auth-box{width:100%;max-width:408px;}
+.auth-box h1{font-size:36px;margin:16px 0 10px;}
+.auth-box>p.lede{font-size:14.5px;margin-bottom:30px;}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.meter{height:4px;border-radius:3px;background:var(--surface-2);overflow:hidden;margin-top:9px;}
+.meter i{display:block;height:100%;width:0;background:var(--bad);transition:.35s;}
+.meter-txt{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-faint);margin-top:7px;}
+.check{display:flex;align-items:flex-start;gap:9px;color:var(--ink-soft);cursor:pointer;
+  font-size:12.5px;line-height:1.6;margin-bottom:20px;}
+.check input{accent-color:var(--gold);width:15px;height:15px;margin-top:2px;flex:none;}
+.check a{color:var(--gold);}
+@media(max-width:900px){.auth{grid-template-columns:1fr;}.auth-art{display:none;}
+  .auth-form{padding:40px 20px;}.two{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="auth">
+  <div class="auth-art">
+    <img src="assets/img/g15-1920.jpg" srcset="assets/img/g15-960.jpg 960w, assets/img/g15-1920.jpg 1920w, assets/img/g15-4k.jpg 3840w" sizes="50vw" alt="Mirror work sharara detail">
+    <div class="auth-perks">
+      <div class="eyebrow">What an account gets you</div>
+      <ul>
+        <li><i class='bx bx-package'></i><span>Track every order from stitching to your door</span></li>
+        <li><i class='bx bx-heart'></i><span>A wishlist that stays put between visits</span></li>
+        <li><i class='bx bx-time-five'></i><span>Early access to the monthly release, a day before everyone</span></li>
+        <li><i class='bx bx-ruler'></i><span>We keep your measurements, so the next piece fits first time</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="auth-form">
+    <div class="auth-box">
+      <div class="eyebrow">Join us</div>
+      <h1>Create your account</h1>
+      <p class="lede">Takes about thirty seconds. Your details stay on your device.</p>
+
+      <form id="form" novalidate>
+        <div class="field"><label for="name">Full name</label>
+          <input class="input" id="name" placeholder="Riddhi Patel" autocomplete="name" required></div>
+        <div class="two">
+          <div class="field"><label for="email">Email address</label>
+            <input class="input" type="email" id="email" placeholder="you@email.com" autocomplete="email" required></div>
+          <div class="field"><label for="phone">Mobile number</label>
+            <input class="input" id="phone" placeholder="98250 00000" inputmode="tel" autocomplete="tel" required></div>
+        </div>
+        <div class="field"><label for="pw">Password</label>
+          <div class="pw-wrap">
+            <input class="input" type="password" id="pw" placeholder="At least 6 characters" autocomplete="new-password" required>
+            <button type="button" class="pw-eye" id="eye" aria-label="Show password"><i class='bx bx-show'></i></button>
+          </div>
+          <div class="meter"><i id="meter-bar"></i></div>
+          <div class="meter-txt" id="meter-txt">Strength — start typing</div>
+        </div>
+        <div class="field"><label for="pw2">Confirm password</label>
+          <input class="input" type="password" id="pw2" placeholder="Type it again" autocomplete="new-password" required></div>
+        <label class="check"><input type="checkbox" id="agree">
+          <span>I agree to the <a href="#">terms</a> and <a href="#">privacy policy</a>, and I'm happy to hear about new releases.</span></label>
+        <div class="err-msg" id="err"></div>
+        <button class="btn btn-solid btn-block" type="submit" id="submit">Create account</button>
+      </form>
+      <p class="form-note">Already have an account? <a href="login.html">Sign in</a></p>
+      <p class="form-note" style="margin-top:10px"><a href="index.html" style="color:var(--ink-faint)">← Back to the shop</a></p>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/brand.js"></script>
+<script src="assets/js/qr.js"></script>
+<script src="assets/js/carousel.js"></script>
+<script src="assets/js/payments.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/fx.js"></script>
+<script>
+JMC.boot('');
+if (JMC.session()) location.replace('profile.html');
+
+const pw = document.getElementById('pw'), eye = document.getElementById('eye');
+eye.onclick = () => { const s = pw.type === 'password'; pw.type = s ? 'text' : 'password';
+  eye.innerHTML = `<i class='bx bx-${s?'hide':'show'}'></i>`; };
+
+pw.oninput = () => {
+  const v = pw.value;
+  let s = 0;
+  if (v.length >= 6) s++; if (v.length >= 10) s++;
+  if (/[A-Z]/.test(v) && /[a-z]/.test(v)) s++;
+  if (/\d/.test(v)) s++; if (/[^\w\s]/.test(v)) s++;
+  const pct = [0,25,45,65,85,100][s];
+  const label = ['Strength — start typing','Weak','Fair','Good','Strong','Very strong'][s];
+  const col = ['var(--bad)','var(--bad)','var(--warn)','var(--warn)','var(--ok)','var(--ok)'][s];
+  const bar = document.getElementById('meter-bar');
+  bar.style.width = pct + '%'; bar.style.background = col;
+  document.getElementById('meter-txt').textContent = label;
+};
+
+document.getElementById('form').onsubmit = async e => {
+  e.preventDefault();
+  const btn = document.getElementById('submit'), err = document.getElementById('err');
+  err.textContent = '';
+  const fail = m => { err.innerHTML = `<i class='bx bx-error-circle'></i> ${m}`; };
+  if (pw.value !== document.getElementById('pw2').value) return fail('The two passwords do not match.');
+  if (!document.getElementById('agree').checked) return fail('Tick the box to accept the terms.');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Creating your account';
+  try {
+    const u = await JMC.signup({
+      name: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      password: pw.value
+    });
+    JMC.mergeGuestCart(u.id);
+    JMC.toast('Account created — welcome, ' + u.name.split(' ')[0], 'ok');
+    const next = sessionStorage.getItem('jmc_after_login');
+    sessionStorage.removeItem('jmc_after_login');
+    setTimeout(() => location.href = next || 'profile.html', 700);
+  } catch (ex) {
+    fail(JMC.esc(ex.message));
+    btn.disabled = false; btn.textContent = 'Create account';
+  }
+};
+</script>
+</body>
+</html>

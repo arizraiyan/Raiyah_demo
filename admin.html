@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin — Jay Mataji Creation</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/luxe.css">
+<style>
+.gate{max-width:420px;margin:70px auto;}
+.admin{display:grid;grid-template-columns:236px 1fr;gap:32px;align-items:start;}
+.anav{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:9px;position:sticky;top:100px;}
+.anav button{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border:none;
+  background:none;cursor:pointer;border-radius:4px;font-size:13.5px;color:var(--ink-soft);
+  text-align:left;transition:.2s;}
+.anav button i{font-size:19px;}
+.anav button:hover{background:var(--surface-2);color:var(--ink);}
+.anav button.on{background:var(--btn-bg);color:var(--btn-fg);}
+.anav .n{margin-left:auto;font-family:var(--f-mono);font-size:10px;
+  background:var(--gold);color:#fff;border-radius:10px;padding:1px 7px;}
+.anav button.on .n{background:rgba(255,255,255,.25);}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px;}
+.kpi .t{display:flex;justify-content:space-between;align-items:center;}
+.kpi .t span{font-family:var(--f-mono);font-size:8.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-soft);}
+.kpi .t i{font-size:20px;color:var(--gold);}
+.kpi b{font-family:var(--f-display);font-size:31px;font-weight:500;display:block;margin-top:12px;line-height:1;}
+.kpi small{font-size:11.5px;color:var(--ink-faint);display:block;margin-top:7px;}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:26px;margin-bottom:24px;}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:14px;
+  margin-bottom:20px;flex-wrap:wrap;}
+.panel-head h3{font-size:20px;display:flex;align-items:center;gap:10px;}
+.chart{display:flex;align-items:flex-end;gap:9px;height:170px;padding-top:12px;}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end;}
+.bar{width:100%;max-width:44px;background:linear-gradient(180deg,var(--gold),var(--brand));
+  border-radius:2px 2px 0 0;min-height:3px;transition:height .8s cubic-bezier(.3,1,.4,1);position:relative;}
+.bar:hover::after{content:attr(data-v);position:absolute;top:-26px;left:50%;transform:translateX(-50%);
+  background:var(--ink);color:var(--bg);font-family:var(--f-mono);font-size:10px;padding:3px 8px;
+  border-radius:2px;white-space:nowrap;}
+.bar-col span{font-family:var(--f-mono);font-size:9px;color:var(--ink-faint);}
+
+.st-sel{padding:7px 11px;border:1px solid var(--line-2);border-radius:20px;background:var(--surface);
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;cursor:pointer;}
+.mini-img{width:40px;height:50px;object-fit:cover;border-radius:2px;background:var(--surface-2);}
+.tool-row{display:flex;gap:11px;flex-wrap:wrap;margin-bottom:20px;}
+.tool-row input,.tool-row select{padding:10px 14px;border:1px solid var(--line-2);
+  border-radius:22px;background:var(--surface);font-size:13px;}
+.tool-row input{flex:1;min-width:180px;}
+
+.modal{position:fixed;inset:0;z-index:1050;background:rgba(20,12,24,.6);backdrop-filter:blur(4px);
+  display:none;align-items:center;justify-content:center;padding:24px;overflow-y:auto;}
+.modal.open{display:flex;}
+.modal-box{background:var(--surface);border:1px solid var(--line);border-radius:6px;
+  width:100%;max-width:560px;box-shadow:var(--shadow-l);animation:lbIn .3s cubic-bezier(.3,1.3,.5,1);
+  max-height:90vh;overflow-y:auto;}
+@keyframes lbIn{from{opacity:0;transform:scale(.95);}to{opacity:1;transform:none;}}
+.modal-head{padding:22px 26px;border-bottom:1px solid var(--line);display:flex;
+  justify-content:space-between;align-items:center;}
+.modal-head h3{font-size:21px;}
+.modal-body{padding:26px;}
+.modal-foot{padding:20px 26px;border-top:1px solid var(--line);display:flex;gap:11px;
+  justify-content:flex-end;background:var(--surface-2);}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:15px;}
+.msg-card{border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:14px;
+  transition:.25s;}
+.msg-card.unread{border-left:3px solid var(--gold);background:var(--surface-2);}
+.msg-top{display:flex;gap:12px;align-items:center;margin-bottom:10px;flex-wrap:wrap;}
+.msg-top b{font-size:14.5px;}
+.msg-top small{font-family:var(--f-mono);font-size:10px;color:var(--ink-faint);margin-left:auto;}
+.msg-card p{font-size:13.5px;color:var(--ink-soft);line-height:1.75;}
+.feed-item{display:flex;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);}
+.feed-item:last-child{border:none;}
+.feed-dot{width:9px;height:9px;border-radius:50%;background:var(--gold);flex:none;}
+@media(max-width:1000px){.kpis{grid-template-columns:repeat(2,1fr);}
+  .ov-grid{grid-template-columns:1fr!important;}}
+@media(max-width:900px){.admin{grid-template-columns:1fr;}.anav{position:static;display:flex;
+  overflow-x:auto;gap:4px;}.anav button{white-space:nowrap;width:auto;}.two{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<section class="page-hero"><div class="wrap">
+  <div class="crumbs"><a href="index.html">Home</a> / Admin</div>
+  <h1 class="display-l" id="h-title">Admin dashboard</h1>
+  <p class="lede" style="margin-top:14px;display:flex;align-items:center;gap:10px" id="h-sub">
+    <span class="live-dot"></span> Live — every change here reaches customers instantly.</p>
+</div></section>
+
+<section class="section tight wrap" id="root"></section>
+
+<div class="modal" id="modal"><div class="modal-box" id="modal-box"></div></div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/brand.js"></script>
+<script src="assets/js/qr.js"></script>
+<script src="assets/js/carousel.js"></script>
+<script src="assets/js/payments.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/fx.js"></script>
+<script>
+JMC.boot('');
+
+const u = JMC.session();
+if (!u) { sessionStorage.setItem('jmc_after_login','admin.html'); location.replace('login.html'); }
+else if (u.role !== 'admin') {
+  document.getElementById('h-title').textContent = 'Staff only';
+  document.getElementById('h-sub').textContent = 'This area is for the shop team.';
+  document.getElementById('root').innerHTML = `<div class="empty-state"><i class='bx bx-lock-alt'></i>
+    <h4>You do not have access to the dashboard</h4>
+    <p>Signed in as ${JMC.esc(u.email)}. If this should be an admin account, ask the owner to change your role.</p>
+    <a href="profile.html" class="btn btn-solid">Go to my profile</a></div>`;
+} else { runAdmin(); }
+
+function runAdmin(){
+let tab = 'overview', q = '', statusFilter = 'all';
+
+/* ── helpers ── */
+const money = JMC.rs;
+const dt = ts => new Date(ts).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+const openModal = html => { document.getElementById('modal-box').innerHTML = html;
+  document.getElementById('modal').classList.add('open'); document.body.style.overflow='hidden'; };
+const closeModal = () => { document.getElementById('modal').classList.remove('open'); document.body.style.overflow=''; };
+document.getElementById('modal').onclick = e => { if (e.target.id === 'modal') closeModal(); };
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+function navHTML(){
+  const unread = JMC.messages().filter(m => !m.read).length;
+  const open = JMC.orders().filter(o => !['Delivered','Cancelled'].includes(o.status)).length;
+  const low = JMC.products().filter(p => p.stock < 5).length;
+  const items = [
+    ['overview','bx-grid-alt','Overview',0],
+    ['orders','bx-package','Orders',open],
+    ['products','bx-purchase-tag','Products',low],
+    ['customers','bx-group','Customers',0],
+    ['inbox','bx-envelope','Inbox',unread],
+    ['reviews','bx-star','Reviews',0],
+    ['payments','bx-credit-card','Payments',0]
+  ];
+  return `<nav class="anav">${items.map(([k,i,l,n]) =>
+    `<button data-tab="${k}" class="${tab===k?'on':''}"><i class='bx ${i}'></i> ${l}
+      ${n?`<span class="n">${n}</span>`:''}</button>`).join('')}</nav>`;
+}
+
+/* ═══ OVERVIEW ═══ */
+function overview(){
+  const os = JMC.orders(), ps = JMC.products(), us = JMC.users().filter(x => x.role !== 'admin');
+  const live = os.filter(o => o.status !== 'Cancelled');
+  const revenue = live.reduce((n,o) => n + o.total, 0);
+  const pending = os.filter(o => !['Delivered','Cancelled'].includes(o.status)).length;
+  const lowStock = ps.filter(p => p.stock < 5);
+
+  /* last 7 days revenue */
+  const days = [...Array(7)].map((_,i) => { const d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()-(6-i)); return d; });
+  const buckets = days.map(d => { const nxt = d.getTime() + 864e5;
+    return live.filter(o => o.createdAt >= d.getTime() && o.createdAt < nxt).reduce((n,o) => n + o.total, 0); });
+  const peak = Math.max(...buckets, 1);
+
+  /* top sellers */
+  const sold = {};
+  live.forEach(o => o.items.forEach(i => sold[i.sku] = (sold[i.sku]||0) + i.qty));
+  const top = Object.entries(sold).sort((a,b) => b[1]-a[1]).slice(0,5);
+
+  return `
+  <div class="kpis">
+    <div class="kpi"><div class="t"><span>Revenue</span><i class='bx bx-rupee'></i></div>
+      <b>${money(revenue)}</b><small>${live.length} paid order${live.length===1?'':'s'}</small></div>
+    <div class="kpi"><div class="t"><span>Open orders</span><i class='bx bx-package'></i></div>
+      <b>${pending}</b><small>Awaiting dispatch or delivery</small></div>
+    <div class="kpi"><div class="t"><span>Customers</span><i class='bx bx-group'></i></div>
+      <b>${us.length}</b><small>Registered accounts</small></div>
+    <div class="kpi"><div class="t"><span>Low stock</span><i class='bx bx-error'></i></div>
+      <b>${lowStock.length}</b><small>Under 5 pieces left</small></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:24px" class="ov-grid">
+    <div class="panel">
+      <div class="panel-head"><h3>Revenue, last 7 days</h3>
+        <span class="mono" style="color:var(--ink-faint)">Peak ${money(peak)}</span></div>
+      <div class="chart">${buckets.map((v,i) => `
+        <div class="bar-col">
+          <div class="bar" style="height:${Math.max(3,(v/peak)*100)}%" data-v="${money(v)}"></div>
+          <span>${days[i].toLocaleDateString('en-IN',{weekday:'short'})}</span>
+        </div>`).join('')}</div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><h3><span class="live-dot"></span> Latest activity</h3></div>
+      ${ os.length ? os.slice(0,5).map(o => `
+        <div class="feed-item"><span class="feed-dot"></span>
+          <div style="flex:1;min-width:0">
+            <b style="font-size:13px;display:block">${JMC.esc(o.userName)} · ${money(o.total)}</b>
+            <small style="font-family:var(--f-mono);font-size:10px;color:var(--ink-faint)">${o.id} · ${dt(o.createdAt)}</small>
+          </div><span class="badge ${o.status==='Delivered'?'ok':o.status==='Cancelled'?'bad':'info'}">${o.status}</span>
+        </div>`).join('')
+        : `<p style="font-size:13.5px;color:var(--ink-soft)">No orders yet. They appear here the second one is placed.</p>` }
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px" class="ov-grid">
+    <div class="panel"><div class="panel-head"><h3>Best sellers</h3></div>
+      ${ top.length ? top.map(([sku,n]) => { const p = JMC.productBySku(sku); if(!p) return '';
+        return `<div class="feed-item">
+          <img class="mini-img" src="assets/img/${p.img}-960.jpg" alt="">
+          <div style="flex:1"><b style="font-size:13.5px;display:block">${JMC.esc(p.name)}</b>
+            <small style="font-family:var(--f-mono);font-size:10px;color:var(--ink-faint)">${sku}</small></div>
+          <b style="font-family:var(--f-mono)">${n} sold</b></div>`; }).join('')
+        : `<p style="font-size:13.5px;color:var(--ink-soft)">Nothing sold yet.</p>` }
+    </div>
+    <div class="panel"><div class="panel-head"><h3>Needs restocking</h3>
+      <button class="btn btn-line btn-sm" data-goto="products">Manage products</button></div>
+      ${ lowStock.length ? lowStock.map(p => `<div class="feed-item">
+          <img class="mini-img" src="assets/img/${p.img}-960.jpg" alt="">
+          <div style="flex:1"><b style="font-size:13.5px;display:block">${JMC.esc(p.name)}</b>
+            <small style="font-family:var(--f-mono);font-size:10px;color:var(--ink-faint)">${p.sku}</small></div>
+          <span class="badge ${p.stock===0?'bad':'warn'}">${p.stock===0?'Sold out':p.stock+' left'}</span></div>`).join('')
+        : `<p style="font-size:13.5px;color:var(--ink-soft)">Everything is comfortably in stock.</p>` }
+    </div>
+  </div>`;
+}
+
+/* ═══ ORDERS ═══ */
+function ordersTab(){
+  let list = JMC.orders();
+  if (statusFilter !== 'all') list = list.filter(o => o.status === statusFilter);
+  if (q) list = list.filter(o => (o.id + o.userName + o.userEmail + o.phone).toLowerCase().includes(q));
+  return `<div class="panel">
+    <div class="panel-head"><h3><span class="live-dot"></span> Orders (${list.length})</h3></div>
+    <div class="tool-row">
+      <input id="q" placeholder="Search order number, customer or phone" value="${JMC.esc(q)}">
+      <select id="st-filter"><option value="all">All statuses</option>
+        ${JMC.STATUSES.map(s => `<option ${statusFilter===s?'selected':''}>${s}</option>`).join('')}</select>
+    </div>
+    ${ list.length ? `<div class="table-wrap"><table>
+      <thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Placed</th><th>Status</th><th></th></tr></thead>
+      <tbody>${list.map(o => `<tr>
+        <td style="font-family:var(--f-mono);font-size:11.5px;color:var(--gold)">${o.id}</td>
+        <td><b>${JMC.esc(o.userName)}</b><br><small style="color:var(--ink-faint);font-size:11px">${JMC.esc(o.userEmail)}</small></td>
+        <td>${o.items.reduce((n,i)=>n+i.qty,0)}</td>
+        <td style="font-family:var(--f-mono);font-weight:600">${money(o.total)}</td>
+        <td style="font-size:12px;color:var(--ink-soft)">${dt(o.createdAt)}</td>
+        <td><select class="st-sel" data-order="${o.id}">
+          ${JMC.STATUSES.map(s => `<option ${o.status===s?'selected':''}>${s}</option>`).join('')}</select></td>
+        <td><button class="btn btn-ghost" data-view="${o.id}"><i class='bx bx-show'></i></button></td>
+      </tr>`).join('')}</tbody></table></div>`
+      : `<div class="empty-state"><i class='bx bx-package'></i><h4>No orders match</h4>
+         <p>Clear the search or pick another status.</p></div>` }
+  </div>`;
+}
+
+function orderModal(id){
+  const o = JMC.orders().find(x => x.id === id); if (!o) return;
+  const payNames = { cod:'Cash on delivery', upi:'UPI', card:'Card', bank:'Bank transfer' };
+  openModal(`
+    <div class="modal-head"><h3>${o.id}</h3>
+      <button class="tool-btn" onclick="document.getElementById('modal').classList.remove('open');document.body.style.overflow=''"><i class='bx bx-x'></i></button></div>
+    <div class="modal-body">
+      <div class="two" style="margin-bottom:22px">
+        <div><div class="mono" style="color:var(--ink-faint);margin-bottom:5px">Customer</div>
+          <b>${JMC.esc(o.userName)}</b><br><small style="color:var(--ink-soft)">${JMC.esc(o.userEmail)}<br>${JMC.esc(o.phone)}</small></div>
+        <div><div class="mono" style="color:var(--ink-faint);margin-bottom:5px">Deliver to</div>
+          <small style="color:var(--ink-soft);line-height:1.7">${JMC.esc(o.address.line1)}<br>
+            ${JMC.esc(o.address.city)}, ${JMC.esc(o.address.state)} — ${JMC.esc(o.address.pin)}
+            ${o.address.landmark?'<br>Near '+JMC.esc(o.address.landmark):''}</small></div>
+      </div>
+      ${o.items.map(i => `<div class="feed-item">
+        <img class="mini-img" src="assets/img/${i.img}-960.jpg" alt="">
+        <div style="flex:1"><b style="font-size:13.5px;display:block">${JMC.esc(i.name)}</b>
+          <small style="font-family:var(--f-mono);font-size:10px;color:var(--ink-faint)">${i.sku} · Size ${i.size} · Qty ${i.qty}</small></div>
+        <b style="font-family:var(--f-mono)">${money(i.price*i.qty)}</b></div>`).join('')}
+      <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line)">
+        <div class="d-line"><span>Subtotal</span><span>${money(o.subtotal)}</span></div>
+        <div class="d-line"><span>Delivery</span><span>${o.shipping?money(o.shipping):'Free'}</span></div>
+        <div class="d-line"><span>Payment method</span><span>${payNames[o.payment]||o.payment}</span></div>
+        <div class="d-line total"><span>Total</span><b>${money(o.total)}</b></div>
+      </div>
+      <div class="mono" style="color:var(--ink-faint);margin:18px 0 10px">Status history</div>
+      ${o.timeline.map(t => `<div style="display:flex;gap:12px;font-size:12.5px;color:var(--ink-soft);padding:6px 0">
+        <span class="badge info">${t.status}</span><span style="margin-left:auto">${dt(t.at)}</span></div>`).join('')}
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-line btn-sm" id="m-close">Close</button>
+      <select class="input" id="m-status" style="width:auto">
+        ${JMC.STATUSES.map(s => `<option ${o.status===s?'selected':''}>${s}</option>`).join('')}</select>
+      <button class="btn btn-solid btn-sm" id="m-save">Update status</button>
+    </div>`);
+  document.getElementById('m-close').onclick = closeModal;
+  document.getElementById('m-save').onclick = () => {
+    JMC.setOrderStatus(id, document.getElementById('m-status').value);
+    JMC.toast('Status updated — the customer sees it now', 'ok');
+    closeModal(); render();
+  };
+}
+
+/* ═══ PRODUCTS ═══ */
+function productsTab(){
+  let list = JMC.products();
+  if (q) list = list.filter(p => (p.name + p.sku + p.cat).toLowerCase().includes(q));
+  return `<div class="panel">
+    <div class="panel-head"><h3>Products (${list.length})</h3>
+      <button class="btn btn-solid btn-sm" id="add-product"><i class='bx bx-plus'></i> Add a product</button></div>
+    <div class="tool-row"><input id="q" placeholder="Search by name, SKU or category" value="${JMC.esc(q)}"></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th></th><th>Product</th><th>Category</th><th>Price</th><th>M.R.P.</th><th>Stock</th><th>Rating</th><th></th></tr></thead>
+      <tbody>${list.map(p => `<tr>
+        <td><img class="mini-img" src="assets/img/${p.img}-960.jpg" alt=""></td>
+        <td><b>${JMC.esc(p.name)}</b><br><small style="font-family:var(--f-mono);font-size:10px;color:var(--ink-faint)">${p.sku}</small></td>
+        <td style="text-transform:capitalize">${p.cat}</td>
+        <td style="font-family:var(--f-mono);font-weight:600">${money(p.price)}</td>
+        <td style="font-family:var(--f-mono);color:var(--ink-faint)">${money(p.mrp)}</td>
+        <td><input type="number" class="input" style="width:78px;padding:7px 9px;text-align:center"
+              value="${p.stock}" min="0" data-stock="${p.sku}"></td>
+        <td><span class="stars" style="font-size:11px">${'★'.repeat(Math.round(p.rating))}</span>
+          <small style="color:var(--ink-faint)"> ${p.rating}</small></td>
+        <td style="white-space:nowrap">
+          <button class="btn btn-ghost" data-edit="${p.sku}" title="Edit"><i class='bx bx-edit'></i></button>
+          <button class="btn btn-ghost" data-del-p="${p.sku}" title="Delete"><i class='bx bx-trash'></i></button></td>
+      </tr>`).join('')}</tbody></table></div>
+    <p style="font-size:12px;color:var(--ink-faint);margin-top:14px">
+      Change a stock number and the shop page updates for every visitor straight away.</p>
+  </div>`;
+}
+
+function productModal(sku){
+  const p = sku ? JMC.productBySku(sku) : null;
+  const imgs = ['25','27','4','5','6','7','8','9','3','g4','g11','g8','g3','g13','11','g15','10','g12','g14','g6'];
+  openModal(`
+    <div class="modal-head"><h3>${p ? 'Edit product' : 'Add a product'}</h3>
+      <button class="tool-btn" id="x1"><i class='bx bx-x'></i></button></div>
+    <div class="modal-body">
+      <div class="two">
+        <div class="field"><label>Product name</label><input class="input" id="f-name" value="${p?JMC.esc(p.name):''}" placeholder="Zari Work Kurta Set"></div>
+        <div class="field"><label>SKU</label><input class="input" id="f-sku" value="${p?p.sku:''}" ${p?'disabled':''} placeholder="JMC-XX-020"></div>
+      </div>
+      <div class="two">
+        <div class="field"><label>Category</label><select class="input" id="f-cat">
+          ${['kurta','gown','set','bridal'].map(c => `<option value="${c}" ${p&&p.cat===c?'selected':''}>${c}</option>`).join('')}</select></div>
+        <div class="field"><label>Photo</label><select class="input" id="f-img">
+          ${imgs.map(i => `<option value="${i}" ${p&&p.img===i?'selected':''}>${i}.jpg</option>`).join('')}</select></div>
+      </div>
+      <div class="two">
+        <div class="field"><label>Selling price (₹)</label><input class="input" type="number" id="f-price" value="${p?p.price:''}" min="0"></div>
+        <div class="field"><label>M.R.P. (₹)</label><input class="input" type="number" id="f-mrp" value="${p?p.mrp:''}" min="0"></div>
+      </div>
+      <div class="two">
+        <div class="field"><label>Stock</label><input class="input" type="number" id="f-stock" value="${p?p.stock:10}" min="0"></div>
+        <div class="field"><label>Badge (optional)</label><input class="input" id="f-badge" value="${p?JMC.esc(p.badge||''):''}" placeholder="New / Bestseller"></div>
+      </div>
+      <div class="field"><label>Fabric</label><input class="input" id="f-fabric" value="${p?JMC.esc(p.fabric):''}" placeholder="Cotton silk"></div>
+      <div class="field"><label>Description</label><textarea class="input" id="f-desc" placeholder="What is it, how is it made, how does it wear?">${p?JMC.esc(p.desc):''}</textarea></div>
+      <div class="err-msg" id="f-err"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-line btn-sm" id="x2">Cancel</button>
+      <button class="btn btn-solid btn-sm" id="f-save">${p ? 'Save changes' : 'Add product'}</button>
+    </div>`);
+  document.getElementById('x1').onclick = closeModal;
+  document.getElementById('x2').onclick = closeModal;
+  document.getElementById('f-save').onclick = () => {
+    const err = document.getElementById('f-err');
+    const name = document.getElementById('f-name').value.trim();
+    const newSku = (p ? p.sku : document.getElementById('f-sku').value.trim().toUpperCase());
+    const price = +document.getElementById('f-price').value, mrp = +document.getElementById('f-mrp').value;
+    if (name.length < 3) return err.textContent = 'Give the product a name.';
+    if (!/^[A-Z0-9-]{4,}$/.test(newSku)) return err.textContent = 'SKU should look like JMC-XX-020.';
+    if (!p && JMC.productBySku(newSku)) return err.textContent = 'That SKU is already used.';
+    if (!price || price <= 0) return err.textContent = 'Enter a selling price.';
+    if (mrp < price) return err.textContent = 'M.R.P. cannot be lower than the selling price.';
+    const img = document.getElementById('f-img').value;
+    const patch = {
+      sku:newSku, name, cat:document.getElementById('f-cat').value, price, mrp, img,
+      stock:+document.getElementById('f-stock').value || 0,
+      badge:document.getElementById('f-badge').value.trim(),
+      badgeTone:'gold',
+      fabric:document.getElementById('f-fabric').value.trim() || 'Cotton blend',
+      desc:document.getElementById('f-desc').value.trim() || 'Made in our Ahmedabad workshop.',
+      work:p?p.work:'Hand-finished', care:p?p.care:'Gentle hand wash',
+      sizes:p?p.sizes:['S','M','L','XL'], colors:p?p.colors:['Ivory','Wine','Emerald'],
+      rating:p?p.rating:4.5, reviews:p?p.reviews:0, gallery:p?p.gallery:[img,img,img]
+    };
+    const list = JMC.products().slice();
+    if (p) { const i = list.findIndex(x => x.sku === p.sku); list[i] = { ...list[i], ...patch }; }
+    else list.unshift(patch);
+    JMC.saveProducts(list);
+    JMC.toast(p ? 'Product saved' : 'Product added — it is live on the shop now', 'ok');
+    closeModal(); render();
+  };
+}
+
+/* ═══ CUSTOMERS ═══ */
+function customersTab(){
+  let list = JMC.users();
+  if (q) list = list.filter(x => (x.name + x.email + x.phone).toLowerCase().includes(q));
+  const os = JMC.orders();
+  return `<div class="panel">
+    <div class="panel-head"><h3>Customers (${list.length})</h3></div>
+    <div class="tool-row"><input id="q" placeholder="Search by name, email or phone" value="${JMC.esc(q)}"></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Orders</th><th>Spent</th><th>Joined</th><th>Role</th></tr></thead>
+      <tbody>${list.map(x => {
+        const mine = os.filter(o => o.userId === x.id && o.status !== 'Cancelled');
+        return `<tr>
+          <td><b>${JMC.esc(x.name)}</b></td>
+          <td style="color:var(--ink-soft)">${JMC.esc(x.email)}</td>
+          <td style="font-family:var(--f-mono);font-size:12px">${JMC.esc(x.phone||'—')}</td>
+          <td>${mine.length}</td>
+          <td style="font-family:var(--f-mono);font-weight:600">${money(mine.reduce((n,o)=>n+o.total,0))}</td>
+          <td style="font-size:12px;color:var(--ink-soft)">${new Date(x.createdAt).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</td>
+          <td><span class="badge ${x.role==='admin'?'warn':''}">${x.role}</span></td>
+        </tr>`; }).join('')}</tbody></table></div>
+  </div>`;
+}
+
+/* ═══ INBOX ═══ */
+function inboxTab(){
+  const list = JMC.messages();
+  return `<div class="panel">
+    <div class="panel-head"><h3>Inbox (${list.length})</h3>
+      ${list.length?`<button class="btn btn-line btn-sm" id="read-all">Mark all as read</button>`:''}</div>
+    ${ list.length ? list.map(m => `
+      <div class="msg-card ${m.read?'':'unread'}">
+        <div class="msg-top"><b>${JMC.esc(m.name)}</b>
+          <span class="badge info">${JMC.esc(m.subject||'Message')}</span>
+          <small>${dt(m.at)}</small></div>
+        <p>${JMC.esc(m.body)}</p>
+        <div style="margin-top:13px;display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink-soft)">
+          <a href="mailto:${JMC.esc(m.email)}" style="color:var(--gold)"><i class='bx bx-envelope'></i> ${JMC.esc(m.email)}</a>
+          ${m.phone?`<a href="tel:${JMC.esc(m.phone)}" style="color:var(--gold)"><i class='bx bx-phone'></i> ${JMC.esc(m.phone)}</a>`:''}
+          ${m.read?'':`<button class="btn btn-ghost" data-read="${m.id}" style="padding:0;font-size:12px">Mark as read</button>`}
+        </div></div>`).join('')
+      : `<div class="empty-state"><i class='bx bx-envelope'></i><h4>Inbox is empty</h4>
+         <p>Messages from the contact form land here.</p></div>` }
+  </div>`;
+}
+
+/* ═══ REVIEWS ═══ */
+function reviewsTab(){
+  const all = JMC.reviews();
+  const rows = Object.entries(all).flatMap(([sku, arr]) => arr.map(r => ({ ...r, sku })));
+  rows.sort((a,b) => b.at - a.at);
+  return `<div class="panel">
+    <div class="panel-head"><h3>Reviews (${rows.length})</h3></div>
+    ${ rows.length ? rows.map(r => { const p = JMC.productBySku(r.sku);
+      return `<div class="msg-card">
+        <div class="msg-top">
+          <b>${JMC.esc(r.name)}</b>
+          <span class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>
+          <span class="badge">${p ? JMC.esc(p.name) : r.sku}</span>
+          <small>${dt(r.at)}</small></div>
+        <p>${JMC.esc(r.text)}</p>
+        <div style="margin-top:12px"><button class="btn btn-ghost" data-del-r="${r.sku}|${r.id}"
+          style="padding:0;font-size:12px;color:var(--bad)">Remove review</button></div></div>`; }).join('')
+      : `<div class="empty-state"><i class='bx bx-star'></i><h4>No reviews yet</h4>
+         <p>Customer reviews from product pages show up here.</p></div>` }
+  </div>`;
+}
+
+/* ═══ PAYMENTS ═══ */
+function paymentsTab(){
+  const st = JMCPay.settings();
+  const paid = JMC.orders().filter(o => o.status !== 'Cancelled');
+  const byMethod = {};
+  paid.forEach(o => { const k = o.paymentLabel || o.payment || 'Unknown';
+    byMethod[k] = (byMethod[k] || 0) + o.total; });
+  const rows = Object.entries(byMethod).sort((a,b) => b[1] - a[1]);
+  const awaiting = JMC.orders().filter(o => o.paymentPending);
+
+  return `
+  <div class="panel">
+    <h3>How money reaches you</h3>
+    <p class="sub">These settings drive the UPI code your customers scan at checkout.</p>
+
+    <div class="field"><label for="s-upi">Your UPI ID</label>
+      <input class="input" id="s-upi" value="${JMC.esc(st.upiId)}" placeholder="yourname@okaxis"></div>
+    <div class="field"><label for="s-payee">Name shown in the UPI app</label>
+      <input class="input" id="s-payee" value="${JMC.esc(st.payee)}" placeholder="Jay Mataji Creation"></div>
+
+    <label class="check" style="margin:6px 0 18px">
+      <input type="checkbox" id="s-demo" ${st.demoMode ? 'checked' : ''}>
+      <span><b>Demo mode</b> — payments settle instantly so you can test the whole shop.
+      Switch it off and the UPI code becomes a real request to the ID above, with the
+      customer entering their 12-digit UTR for you to verify.</span>
+    </label>
+
+    <button class="btn btn-solid" id="s-save">Save payment settings</button>
+    <div class="err-msg" id="s-err"></div>
+  </div>
+
+  <div class="panel">
+    <h3>Taken by method</h3>
+    ${rows.length ? `<table class="tbl"><thead><tr><th>Method</th><th>Orders</th><th style="text-align:right">Value</th></tr></thead>
+      <tbody>${rows.map(([k,v]) => `<tr><td>${JMC.esc(k)}</td>
+        <td>${paid.filter(o => (o.paymentLabel||o.payment) === k).length}</td>
+        <td style="text-align:right">${JMC.rs(v)}</td></tr>`).join('')}</tbody></table>`
+      : `<div class="empty-state"><i class='bx bx-credit-card'></i><h4>No payments yet</h4>
+         <p>Once orders come in, the split by method shows here.</p></div>`}
+  </div>
+
+  ${awaiting.length ? `<div class="panel">
+    <h3>Waiting on your check <span class="n">${awaiting.length}</span></h3>
+    <p class="sub">The customer submitted a UTR. Match it against your bank statement, then confirm.</p>
+    ${awaiting.map(o => `<div class="mrow">
+      <div><b>${JMC.esc(o.id)}</b><small>${JMC.esc(o.userName)} · ${JMC.rs(o.total)} · UTR ${JMC.esc((o.meta&&o.meta.utr)||o.paymentRef||'—')}</small></div>
+      <button class="btn btn-line btn-sm" data-confirm="${o.id}">Mark as received</button>
+    </div>`).join('')}
+  </div>` : ''}`;
+}
+
+/* ═══ RENDER ═══ */
+function render(){
+  const panes = { overview, orders:ordersTab, products:productsTab,
+    customers:customersTab, inbox:inboxTab, reviews:reviewsTab, payments:paymentsTab };
+  document.getElementById('root').innerHTML =
+    `<div class="admin">${navHTML()}<div>${panes[tab]()}</div></div>`;
+
+  document.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => { tab = b.dataset.tab; q=''; render(); });
+
+  const save = document.getElementById('s-save');
+  if (save) save.onclick = () => {
+    const upi = document.getElementById('s-upi').value.trim();
+    const err = document.getElementById('s-err');
+    if (!/^[\w.\-]{2,}@[a-z]{2,}$/i.test(upi)) { err.textContent = 'Enter a UPI ID like yourname@okaxis.'; return; }
+    err.textContent = '';
+    JMCPay.saveSettings({ upiId: upi,
+      payee: document.getElementById('s-payee').value.trim() || 'Jay Mataji Creation',
+      demoMode: document.getElementById('s-demo').checked });
+    JMC.toast('Payment settings saved', 'ok');
+  };
+  document.querySelectorAll('[data-confirm]').forEach(b => b.onclick = () => {
+    const list = JMC.orders(); const o = list.find(x => x.id === b.dataset.confirm);
+    if (o) { o.paymentPending = false; JMC.write(JMC.K.orders, list);
+      JMC.toast('Payment marked as received', 'ok'); render(); }
+  });
+  document.querySelectorAll('[data-goto]').forEach(b => b.onclick = () => { tab = b.dataset.goto; render(); });
+
+  const qi = document.getElementById('q');
+  if (qi) { let t; qi.oninput = e => { clearTimeout(t); t = setTimeout(() => { q = e.target.value.trim().toLowerCase();
+    render(); const n = document.getElementById('q'); if(n){n.focus(); n.setSelectionRange(n.value.length,n.value.length);} }, 220); }; }
+
+  const sf = document.getElementById('st-filter');
+  if (sf) sf.onchange = () => { statusFilter = sf.value; render(); };
+
+  document.querySelectorAll('[data-order]').forEach(s => s.onchange = () => {
+    JMC.setOrderStatus(s.dataset.order, s.value);
+    JMC.toast('Status set to ' + s.value + ' — customer notified', 'ok'); render();
+  });
+  document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => orderModal(b.dataset.view));
+
+  const addp = document.getElementById('add-product');
+  if (addp) addp.onclick = () => productModal(null);
+  document.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => productModal(b.dataset.edit));
+  document.querySelectorAll('[data-del-p]').forEach(b => b.onclick = () => {
+    const p = JMC.productBySku(b.dataset.delP);
+    if (!confirm('Delete "' + p.name + '"? It disappears from the shop immediately.')) return;
+    JMC.saveProducts(JMC.products().filter(x => x.sku !== p.sku));
+    JMC.toast('Product deleted'); render();
+  });
+  document.querySelectorAll('[data-stock]').forEach(inp => inp.onchange = () => {
+    const list = JMC.products().slice();
+    const p = list.find(x => x.sku === inp.dataset.stock);
+    p.stock = Math.max(0, +inp.value || 0);
+    JMC.saveProducts(list);
+    JMC.toast(p.name + ' stock set to ' + p.stock, 'ok');
+  });
+
+  document.querySelectorAll('[data-read]').forEach(b => b.onclick = () => {
+    const list = JMC.messages().slice();
+    const m = list.find(x => x.id === b.dataset.read); m.read = true;
+    JMC.write(JMC.K.msgs, list); render();
+  });
+  const ra = document.getElementById('read-all');
+  if (ra) ra.onclick = () => { const list = JMC.messages().map(m => ({...m, read:true}));
+    JMC.write(JMC.K.msgs, list); JMC.toast('Inbox cleared'); render(); };
+
+  document.querySelectorAll('[data-del-r]').forEach(b => b.onclick = () => {
+    const [sku, id] = b.dataset.delR.split('|');
+    const all = JMC.reviews();
+    all[sku] = all[sku].filter(r => r.id !== id);
+    JMC.write(JMC.K.reviews, all); JMC.toast('Review removed'); render();
+  });
+}
+
+/* real-time: a customer places an order in another tab → dashboard reacts */
+window.onJMCLive = key => {
+  if ([JMC.K.orders, JMC.K.products, JMC.K.users, JMC.K.msgs, JMC.K.reviews].includes(key)) {
+    if (!document.getElementById('modal').classList.contains('open')) render();
+  }
+};
+render();
+}
+
+JMC.renderFooter();
+</script>
+</body>
+</html>

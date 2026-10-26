@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Collection — Jay Mataji Creation</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/luxe.css">
+<style>
+.shop-layout{display:grid;grid-template-columns:238px 1fr;gap:44px;align-items:start;}
+.filters{position:sticky;top:100px;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);padding:26px 22px;}
+.f-block{padding-bottom:22px;margin-bottom:22px;border-bottom:1px solid var(--line);}
+.f-block:last-child{border:none;margin:0;padding:0;}
+.f-block h5{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:15px;}
+.f-opt{display:flex;align-items:center;gap:10px;padding:7px 0;cursor:pointer;font-size:13.5px;
+  color:var(--ink-soft);transition:color .2s;}
+.f-opt:hover{color:var(--ink);}
+.f-opt input{accent-color:var(--gold);width:15px;height:15px;cursor:pointer;}
+.f-opt .n{margin-left:auto;font-family:var(--f-mono);font-size:10px;color:var(--ink-faint);}
+.range-out{font-family:var(--f-mono);font-size:12px;color:var(--gold);margin-bottom:10px;}
+input[type=range]{width:100%;accent-color:var(--gold);}
+
+.shop-bar{display:flex;align-items:center;gap:14px;margin-bottom:26px;flex-wrap:wrap;}
+.search-box{position:relative;flex:1;min-width:200px;}
+.search-box i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--ink-faint);font-size:19px;}
+.search-box input{width:100%;padding:12px 14px 12px 42px;border:1px solid var(--line-2);
+  border-radius:30px;background:var(--surface);font-size:14px;}
+.search-box input:focus{outline:none;border-color:var(--gold);}
+.sort-sel{padding:12px 16px;border:1px solid var(--line-2);border-radius:30px;
+  background:var(--surface);font-size:13px;cursor:pointer;}
+.result-line{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-faint);}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.chip{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  padding:6px 12px;border-radius:20px;background:var(--surface-2);border:1px solid var(--line);
+  display:flex;align-items:center;gap:7px;cursor:pointer;}
+.chip:hover{border-color:var(--bad);color:var(--bad);}
+.filter-toggle{display:none;}
+@media(max-width:960px){
+  .shop-layout{grid-template-columns:1fr;gap:20px;}
+  .filters{position:static;display:none;}
+  .filters.show{display:block;}
+  .filter-toggle{display:inline-flex;}
+}
+</style>
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="wrap">
+    <div class="crumbs"><a href="index.html">Home</a> / Collection</div>
+    <h1 class="display-l" id="page-title">The Collection</h1>
+    <p class="lede" style="margin-top:14px">Sixteen pieces, each made in a run of forty or fewer. Stock counts below are live.</p>
+  </div>
+</section>
+
+<section class="section tight wrap">
+  <div class="shop-layout">
+    <aside class="filters" id="filters">
+      <div class="f-block">
+        <h5>Category</h5>
+        <label class="f-opt"><input type="radio" name="cat" value="all" checked> All pieces <span class="n" data-count="all"></span></label>
+        <label class="f-opt"><input type="radio" name="cat" value="kurta"> Kurta sets <span class="n" data-count="kurta"></span></label>
+        <label class="f-opt"><input type="radio" name="cat" value="gown"> Gowns <span class="n" data-count="gown"></span></label>
+        <label class="f-opt"><input type="radio" name="cat" value="set"> Co-ord sets <span class="n" data-count="set"></span></label>
+        <label class="f-opt"><input type="radio" name="cat" value="bridal"> Bridal <span class="n" data-count="bridal"></span></label>
+      </div>
+      <div class="f-block">
+        <h5>Maximum price</h5>
+        <div class="range-out" id="price-out">Up to ₹5,000</div>
+        <input type="range" id="price" min="1000" max="5000" step="100" value="5000">
+      </div>
+      <div class="f-block">
+        <h5>Size</h5>
+        <div id="size-opts"></div>
+      </div>
+      <div class="f-block">
+        <h5>Availability</h5>
+        <label class="f-opt"><input type="checkbox" id="instock"> In stock only</label>
+      </div>
+      <button class="btn btn-line btn-sm btn-block" id="reset" style="margin-top:18px">Clear all filters</button>
+    </aside>
+
+    <div>
+      <div class="shop-bar">
+        <button class="btn btn-line btn-sm filter-toggle" id="ftoggle"><i class='bx bx-slider-alt'></i> Filters</button>
+        <div class="search-box"><i class='bx bx-search'></i>
+          <input type="search" id="q" placeholder="Search by name, fabric or SKU" aria-label="Search the collection"></div>
+        <select class="sort-sel" id="sort" aria-label="Sort products">
+          <option value="feat">Sort: Featured</option>
+          <option value="low">Price: low to high</option>
+          <option value="high">Price: high to low</option>
+          <option value="rate">Highest rated</option>
+          <option value="new">Newest first</option>
+        </select>
+      </div>
+      <div class="chips" id="chips"></div>
+      <div class="result-line" id="count" style="margin-bottom:20px"></div>
+      <div class="grid grid-4" id="grid"></div>
+      <div class="empty-state hidden" id="empty">
+        <i class='bx bx-search-alt'></i><h4>Nothing matches those filters</h4>
+        <p>Try widening the price range or clearing the search.</p>
+        <button class="btn btn-solid" id="reset2">Clear all filters</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/brand.js"></script>
+<script src="assets/js/qr.js"></script>
+<script src="assets/js/carousel.js"></script>
+<script src="assets/js/payments.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/fx.js"></script>
+<script>
+JMC.boot('shop.html');
+
+const CAT_NAMES = { all:'The Collection', kurta:'Kurta Sets', gown:'Gowns', set:'Co-ord Sets', bridal:'Bridal' };
+const state = { cat:'all', max:5000, sizes:new Set(), instock:false, q:'', sort:'feat' };
+
+/* deep link ?cat= */
+const urlCat = new URLSearchParams(location.search).get('cat');
+if (urlCat && CAT_NAMES[urlCat]) {
+  state.cat = urlCat;
+  document.querySelector(`input[name=cat][value="${urlCat}"]`).checked = true;
+}
+
+/* size options */
+const allSizes = [...new Set(JMC.products().flatMap(p => p.sizes))];
+document.getElementById('size-opts').innerHTML = allSizes.map(s =>
+  `<label class="f-opt"><input type="checkbox" class="sz" value="${s}"> Size ${s}</label>`).join('');
+
+function counts(){
+  const p = JMC.products();
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const c = el.dataset.count;
+    el.textContent = c === 'all' ? p.length : p.filter(x => x.cat === c).length;
+  });
+}
+
+function apply(){
+  let list = JMC.products().filter(p =>
+    (state.cat === 'all' || p.cat === state.cat) &&
+    p.price <= state.max &&
+    (!state.sizes.size || p.sizes.some(s => state.sizes.has(s))) &&
+    (!state.instock || p.stock > 0) &&
+    (!state.q || (p.name + ' ' + p.sku + ' ' + p.fabric + ' ' + p.desc).toLowerCase().includes(state.q))
+  );
+  const sorters = {
+    low:(a,b) => a.price - b.price, high:(a,b) => b.price - a.price,
+    rate:(a,b) => b.rating - a.rating, new:(a,b) => (b.badge==='New') - (a.badge==='New'),
+    feat:(a,b) => b.reviews - a.reviews
+  };
+  list.sort(sorters[state.sort]);
+
+  document.getElementById('page-title').textContent = CAT_NAMES[state.cat];
+  document.getElementById('count').textContent = list.length + ' piece' + (list.length===1?'':'s');
+  document.getElementById('grid').innerHTML = list.map(JMC.cardHTML).join('');
+  document.getElementById('empty').classList.toggle('hidden', list.length > 0);
+  JMC.wireCards();
+  JMC.revealOnScroll();
+  document.querySelectorAll('.card').forEach(c => c.classList.add('in'));
+  drawChips();
+}
+
+function drawChips(){
+  const c = [];
+  if (state.cat !== 'all') c.push(['cat', CAT_NAMES[state.cat]]);
+  if (state.max < 5000) c.push(['max', 'Under ' + JMC.rs(state.max)]);
+  state.sizes.forEach(s => c.push(['size:' + s, 'Size ' + s]));
+  if (state.instock) c.push(['stock','In stock']);
+  if (state.q) c.push(['q','“' + JMC.esc(state.q) + '”']);
+  document.getElementById('chips').innerHTML = c.map(([k,l]) =>
+    `<span class="chip" data-clear="${k}">${l} <i class='bx bx-x'></i></span>`).join('');
+  document.querySelectorAll('[data-clear]').forEach(el => el.onclick = () => {
+    const k = el.dataset.clear;
+    if (k === 'cat') { state.cat = 'all'; document.querySelector('input[name=cat][value=all]').checked = true; }
+    else if (k === 'max') { state.max = 5000; document.getElementById('price').value = 5000; priceOut(); }
+    else if (k === 'stock') { state.instock = false; document.getElementById('instock').checked = false; }
+    else if (k === 'q') { state.q = ''; document.getElementById('q').value = ''; }
+    else if (k.startsWith('size:')) { const s = k.slice(5); state.sizes.delete(s);
+      document.querySelector(`.sz[value="${s}"]`).checked = false; }
+    apply();
+  });
+}
+
+const priceOut = () => document.getElementById('price-out').textContent = 'Up to ' + JMC.rs(state.max);
+
+document.querySelectorAll('input[name=cat]').forEach(r => r.onchange = () => { state.cat = r.value; apply(); });
+document.getElementById('price').oninput = e => { state.max = +e.target.value; priceOut(); apply(); };
+document.getElementById('instock').onchange = e => { state.instock = e.target.checked; apply(); };
+document.addEventListener('change', e => {
+  if (e.target.classList.contains('sz')) {
+    e.target.checked ? state.sizes.add(e.target.value) : state.sizes.delete(e.target.value);
+    apply();
+  }
+});
+let t; document.getElementById('q').oninput = e => {
+  clearTimeout(t); t = setTimeout(() => { state.q = e.target.value.trim().toLowerCase(); apply(); }, 180);
+};
+document.getElementById('sort').onchange = e => { state.sort = e.target.value; apply(); };
+document.getElementById('ftoggle').onclick = () => document.getElementById('filters').classList.toggle('show');
+
+function resetAll(){
+  state.cat='all'; state.max=5000; state.sizes.clear(); state.instock=false; state.q=''; state.sort='feat';
+  document.querySelector('input[name=cat][value=all]').checked = true;
+  document.getElementById('price').value = 5000; priceOut();
+  document.querySelectorAll('.sz').forEach(c => c.checked = false);
+  document.getElementById('instock').checked = false;
+  document.getElementById('q').value = ''; document.getElementById('sort').value = 'feat';
+  apply();
+}
+document.getElementById('reset').onclick = resetAll;
+document.getElementById('reset2').onclick = resetAll;
+
+/* live: admin edits products → shop updates instantly */
+window.onJMCLive = key => { if (key === JMC.K.products) { counts(); apply(); } };
+
+counts(); apply();
+JMC.renderFooter();
+</script>
+</body>
+</html>

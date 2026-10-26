@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sign in — Jay Mataji Creation</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/luxe.css">
+<style>
+.auth{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 76px);}
+.auth-art{position:relative;overflow:hidden;background:var(--surface-2);}
+.auth-art img{width:100%;height:100%;object-fit:cover;}
+.auth-art::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(200deg,rgba(20,10,22,.28),rgba(74,31,61,.7));}
+.auth-quote{position:absolute;left:52px;right:52px;bottom:52px;z-index:2;color:#fff;}
+.auth-quote .eyebrow{color:#E4C879;}.auth-quote .eyebrow::before{background:#E4C879;}
+.auth-quote p{font-family:var(--f-display);font-size:27px;line-height:1.42;margin:20px 0 14px;font-weight:400;}
+.auth-quote small{font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(255,255,255,.7);}
+.auth-form{display:flex;align-items:center;justify-content:center;padding:56px 40px;}
+.auth-box{width:100%;max-width:400px;}
+.auth-box h1{font-size:36px;margin:16px 0 10px;}
+.auth-box>p.lede{font-size:14.5px;margin-bottom:32px;}
+.demo{background:var(--surface-2);border:1px dashed var(--line-2);border-radius:var(--radius);
+  padding:15px 17px;margin-bottom:26px;font-size:12.5px;color:var(--ink-soft);line-height:1.75;}
+.demo b{color:var(--gold);font-family:var(--f-mono);font-size:11.5px;}
+.demo button{background:none;border:none;color:var(--gold);cursor:pointer;
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  border-bottom:1px solid var(--gold);padding:0;margin-top:8px;}
+.row-between{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;
+  font-size:12.5px;flex-wrap:wrap;gap:10px;}
+.check{display:flex;align-items:center;gap:8px;color:var(--ink-soft);cursor:pointer;}
+.check input{accent-color:var(--gold);width:15px;height:15px;}
+@media(max-width:900px){.auth{grid-template-columns:1fr;}.auth-art{display:none;}
+  .auth-form{padding:40px 20px;}}
+</style>
+</head>
+<body>
+
+<div class="auth">
+  <div class="auth-art">
+    <img src="assets/img/g8-1920.jpg" srcset="assets/img/g8-960.jpg 960w, assets/img/g8-1920.jpg 1920w, assets/img/g8-4k.jpg 3840w" sizes="50vw" alt="Aari embroidery detail">
+    <div class="auth-quote">
+      <div class="eyebrow">Since 2016</div>
+      <p>“The stitch you cannot see is the one that holds it together.”</p>
+      <small>Kailash Ben · Head karigar, Maninagar</small>
+    </div>
+  </div>
+
+  <div class="auth-form">
+    <div class="auth-box">
+      <div class="eyebrow">Welcome back</div>
+      <h1>Sign in</h1>
+      <p class="lede">Your bag, wishlist and order history are waiting.</p>
+
+      <div class="demo">
+        Trying the site out? Use the admin login to see the dashboard:<br>
+        <b>admin@jaymataji.com</b> · <b>Mataji@2026</b>
+        <br><button id="fill-demo">Fill these in for me</button>
+      </div>
+
+      <form id="form" novalidate>
+        <div class="field"><label for="email">Email address</label>
+          <input class="input" type="email" id="email" placeholder="you@email.com" autocomplete="email" required></div>
+        <div class="field"><label for="pw">Password</label>
+          <div class="pw-wrap">
+            <input class="input" type="password" id="pw" placeholder="••••••••" autocomplete="current-password" required>
+            <button type="button" class="pw-eye" id="eye" aria-label="Show password"><i class='bx bx-show'></i></button>
+          </div></div>
+        <div class="row-between">
+          <label class="check"><input type="checkbox" id="remember" checked> Keep me signed in</label>
+          <a href="#" style="color:var(--gold)" id="forgot">Forgot password?</a>
+        </div>
+        <div class="err-msg" id="err"></div>
+        <button class="btn btn-solid btn-block" type="submit" id="submit">Sign in</button>
+      </form>
+      <p class="form-note">New here? <a href="signup.html">Create an account</a></p>
+      <p class="form-note" style="margin-top:10px"><a href="index.html" style="color:var(--ink-faint)">← Back to the shop</a></p>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/brand.js"></script>
+<script src="assets/js/qr.js"></script>
+<script src="assets/js/carousel.js"></script>
+<script src="assets/js/payments.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/fx.js"></script>
+<script>
+JMC.boot('');
+
+if (JMC.session()) location.replace('profile.html');
+
+const eye = document.getElementById('eye'), pw = document.getElementById('pw');
+eye.onclick = () => { const s = pw.type === 'password'; pw.type = s ? 'text' : 'password';
+  eye.innerHTML = `<i class='bx bx-${s?'hide':'show'}'></i>`; };
+
+document.getElementById('fill-demo').onclick = () => {
+  document.getElementById('email').value = 'admin@jaymataji.com';
+  pw.value = 'Mataji@2026';
+  document.getElementById('err').textContent = '';
+};
+
+document.getElementById('forgot').onclick = e => { e.preventDefault();
+  JMC.toast('Call us on +91 98250 00000 and we will reset it for you'); };
+
+document.getElementById('form').onsubmit = async e => {
+  e.preventDefault();
+  const btn = document.getElementById('submit'), err = document.getElementById('err');
+  err.textContent = '';
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Signing in';
+  try {
+    const u = await JMC.login(document.getElementById('email').value, pw.value);
+    JMC.mergeGuestCart(u.id);
+    JMC.toast('Signed in as ' + u.name, 'ok');
+    const next = sessionStorage.getItem('jmc_after_login');
+    sessionStorage.removeItem('jmc_after_login');
+    setTimeout(() => location.href = next || (u.role === 'admin' ? 'admin.html' : 'profile.html'), 600);
+  } catch (ex) {
+    err.innerHTML = `<i class='bx bx-error-circle'></i> ${JMC.esc(ex.message)}`;
+    btn.disabled = false; btn.textContent = 'Sign in';
+  }
+};
+</script>
+</body>
+</html>

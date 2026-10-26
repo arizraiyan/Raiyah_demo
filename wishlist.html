@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wishlist — Jay Mataji Creation</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/luxe.css">
+</head>
+<body>
+<section class="page-hero"><div class="wrap">
+  <div class="crumbs"><a href="index.html">Home</a> / Wishlist</div>
+  <h1 class="display-l">Your wishlist</h1>
+  <p class="lede" style="margin-top:14px">Pieces you saved. Stock counts are live, so if something says two left, it means two.</p>
+</div></section>
+
+<section class="section tight wrap">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:26px;flex-wrap:wrap">
+    <span class="mono" style="color:var(--ink-faint)" id="count"></span>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-line btn-sm" id="clear">Clear wishlist</button>
+      <button class="btn btn-solid btn-sm" id="all-to-bag">Move everything to bag</button>
+    </div>
+  </div>
+  <div class="grid grid-4" id="grid"></div>
+  <div class="empty-state hidden" id="empty">
+    <i class='bx bx-heart'></i><h4>Nothing saved yet</h4>
+    <p>Tap the heart on any piece and it will wait for you here.</p>
+    <a href="shop.html" class="btn btn-solid">Browse the collection</a>
+  </div>
+</section>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/brand.js"></script>
+<script src="assets/js/qr.js"></script>
+<script src="assets/js/carousel.js"></script>
+<script src="assets/js/payments.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/fx.js"></script>
+<script>
+JMC.boot('');
+function render(){
+  const skus = JMC.wishlist();
+  const list = skus.map(s => JMC.productBySku(s)).filter(Boolean);
+  document.getElementById('count').textContent = list.length + ' piece' + (list.length===1?'':'s') + ' saved';
+  document.getElementById('grid').innerHTML = list.map(JMC.cardHTML).join('');
+  document.getElementById('empty').classList.toggle('hidden', list.length > 0);
+  document.getElementById('clear').classList.toggle('hidden', !list.length);
+  document.getElementById('all-to-bag').classList.toggle('hidden', !list.length);
+  JMC.wireCards();
+  document.querySelectorAll('.card').forEach(c => c.classList.add('in'));
+}
+document.getElementById('clear').onclick = () => {
+  if (!confirm('Clear everything from your wishlist?')) return;
+  JMC.wishlist().slice().forEach(s => JMC.toggleWish(s));
+  render();
+};
+document.getElementById('all-to-bag').onclick = () => {
+  const list = JMC.wishlist().slice();
+  list.forEach(s => { const p = JMC.productBySku(s); if (p && p.stock > 0) JMC.addToCart(s, 1); });
+  JMC.openDrawer();
+};
+window.onJMCLive = key => { if (key === JMC.K.wish || key === JMC.K.products) render(); };
+render();
+JMC.renderFooter();
+</script>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Raiyan</title>
+<meta name="description" content="Hand-embroidered kurta sets, gowns and bridal wear made in our Ahmedabad atelier. Free delivery over ₹2,999.">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/luxe.css">
+<style>
+/* ── Hero ── */
+.hero{position:relative;min-height:min(92vh,860px);display:flex;align-items:flex-end;
+  overflow:hidden;margin-bottom:0;}
+.hero-img{position:absolute;inset:0;}
+.hero-img img{width:100%;height:100%;object-fit:cover;object-position:center 28%;
+  animation:heroZoom 18s ease-out forwards;}
+@keyframes heroZoom{from{transform:scale(1.09);}to{transform:scale(1);}}
+.hero-img::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(20,10,22,.42) 0%,rgba(20,10,22,.12) 38%,rgba(20,10,22,.86) 100%);}
+.hero-inner{position:relative;z-index:2;width:100%;max-width:var(--maxw);margin:0 auto;
+  padding:0 40px 74px;color:#fff;}
+.hero .eyebrow{color:#E4C879;}
+.hero .eyebrow::before{background:#E4C879;}
+.hero h1{font-size:clamp(42px,6.4vw,84px);color:#fff;margin:22px 0 20px;max-width:15ch;font-weight:400;}
+.hero h1 em{font-style:italic;color:#E4C879;}
+.hero p{max-width:44ch;color:rgba(255,255,255,.84);font-size:16px;line-height:1.8;margin-bottom:34px;}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;}
+.hero-cta .btn-line{border-color:rgba(255,255,255,.55);color:#fff;}
+.hero-cta .btn-line:hover{background:#fff;color:#251A2B;border-color:#fff;}
+.hero-cta .btn-solid{background:#E4C879;color:#231a10;}
+.hero-fade-up{opacity:0;transform:translateY(26px);animation:fu 1s cubic-bezier(.2,.6,.2,1) forwards;}
+.hero-fade-up:nth-child(1){animation-delay:.15s}.hero-fade-up:nth-child(2){animation-delay:.3s}
+.hero-fade-up:nth-child(3){animation-delay:.45s}.hero-fade-up:nth-child(4){animation-delay:.6s}
+@keyframes fu{to{opacity:1;transform:none;}}
+
+/* ── Marquee strip ── */
+.strip{background:var(--brand);color:#fff;overflow:hidden;padding:13px 0;}
+[data-theme="dark"] .strip{background:var(--surface-2);color:var(--gold);}
+.strip-track{display:flex;gap:56px;width:max-content;animation:slide 34s linear infinite;}
+.strip span{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;
+  white-space:nowrap;display:flex;align-items:center;gap:12px;opacity:.92;}
+@keyframes slide{to{transform:translateX(-50%);}}
+.strip:hover .strip-track{animation-play-state:paused;}
+
+/* ── Categories ── */
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+.cat{position:relative;aspect-ratio:3/4.1;overflow:hidden;border-radius:var(--radius);
+  display:block;background:var(--surface-2);}
+.cat img{width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.3,0,.2,1);}
+.cat:hover img{transform:scale(1.07);}
+.cat::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(18,10,20,.82),rgba(18,10,20,.05) 62%);}
+.cat-label{position:absolute;left:22px;right:22px;bottom:22px;z-index:2;color:#fff;}
+.cat-label b{font-family:var(--f-display);font-size:23px;font-weight:500;display:block;}
+.cat-label small{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.2em;
+  text-transform:uppercase;color:#E4C879;display:flex;align-items:center;gap:7px;margin-top:8px;}
+.cat-label small i{transition:transform .3s;}
+.cat:hover .cat-label small i{transform:translateX(5px);}
+
+/* ── Process (a real sequence, hence numbers) ── */
+.process{background:var(--bg-alt);}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+.step{background:var(--bg);padding:34px 28px;transition:background .35s;}
+.step:hover{background:var(--surface);}
+.step .n{font-family:var(--f-mono);font-size:11px;color:var(--gold);letter-spacing:.2em;
+  display:block;margin-bottom:18px;}
+.step h4{font-family:var(--f-display);font-size:21px;font-weight:500;margin-bottom:11px;}
+.step p{font-size:13.5px;color:var(--ink-soft);line-height:1.75;}
+
+/* ── Editorial split ── */
+.split{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:0;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+.split-img{aspect-ratio:4/3.6;overflow:hidden;background:var(--surface-2);}
+.split-img img{width:100%;height:100%;object-fit:cover;}
+.split-copy{padding:60px 54px;}
+.split-copy h2{margin:20px 0 18px;}
+.stat-row{display:flex;gap:38px;margin:32px 0 34px;flex-wrap:wrap;}
+.stat b{font-family:var(--f-display);font-size:34px;font-weight:500;display:block;color:var(--gold);line-height:1;}
+.stat span{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink-soft);display:block;margin-top:9px;}
+
+/* ── Reviews ── */
+.quote-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.quote{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:32px;
+  display:flex;flex-direction:column;gap:15px;transition:.35s;}
+.quote:hover{transform:translateY(-5px);box-shadow:var(--shadow-m);}
+.quote p{font-size:14.5px;line-height:1.85;color:var(--ink-soft);flex:1;}
+.quote-by{display:flex;align-items:center;gap:12px;padding-top:15px;border-top:1px solid var(--line);}
+.quote-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(140deg,var(--brand),var(--gold));
+  color:#fff;display:grid;place-items:center;font-family:var(--f-mono);font-size:12px;flex:none;}
+.quote-by b{font-size:13.5px;font-weight:600;display:block;}
+.quote-by small{font-size:11px;color:var(--ink-faint);}
+
+/* ── Newsletter ── */
+.news{background:var(--brand);border-radius:var(--radius);padding:66px 54px;text-align:center;color:#fff;
+  position:relative;overflow:hidden;}
+[data-theme="dark"] .news{background:var(--surface-2);color:var(--ink);}
+.news::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 0%,rgba(228,200,121,.22),transparent 62%);}
+.news>*{position:relative;z-index:2;}
+.news h2{color:#fff;margin:18px 0 14px;}
+[data-theme="dark"] .news h2{color:var(--ink);}
+.news p{color:rgba(255,255,255,.78);max-width:48ch;margin:0 auto 30px;font-size:15px;}
+[data-theme="dark"] .news p{color:var(--ink-soft);}
+.news .eyebrow{color:#E4C879;justify-content:center;}
+.news .eyebrow::before{background:#E4C879;}
+.news-form{display:flex;gap:10px;max-width:470px;margin:0 auto;flex-wrap:wrap;}
+.news-form input{flex:1;min-width:210px;padding:15px 18px;border-radius:var(--radius);
+  border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;font-size:14px;}
+[data-theme="dark"] .news-form input{background:var(--surface);border-color:var(--line-2);color:var(--ink);}
+.news-form input::placeholder{color:rgba(255,255,255,.6);}
+[data-theme="dark"] .news-form input::placeholder{color:var(--ink-faint);}
+.news-form input:focus{outline:none;border-color:#E4C879;}
+
+@media(max-width:1000px){
+  .cat-grid{grid-template-columns:repeat(2,1fr);}
+  .steps{grid-template-columns:repeat(2,1fr);}
+  .split{grid-template-columns:1fr;}
+  .split-copy{padding:40px 26px;}
+  .quote-grid{grid-template-columns:1fr;}
+}
+@media(max-width:900px){
+  .hero{min-height:78vh;}
+  .hero-inner{padding:0 20px 50px;}
+  .news{padding:48px 22px;}
+  .step{padding:26px 22px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HERO CAROUSEL ══ -->
+<section id="hero"></section>
+
+<!-- ══ STRIP ══ -->
+<div class="strip">
+  <div class="strip-track" id="strip"></div>
+</div>
+
+<!-- ══ CATEGORIES ══ -->
+<section class="section wrap">
+  <div class="section-head">
+    <div class="eyebrow">What we make</div>
+    <h2 class="display-l">Four things, done properly</h2>
+  </div>
+  <div class="cat-grid">
+    <a href="shop.html?cat=kurta" class="cat reveal">
+      <img src="assets/img/3-960.jpg" srcset="assets/img/3-960.jpg 960w, assets/img/3-1920.jpg 1920w, assets/img/3-4k.jpg 3840w" sizes="(max-width:1000px) 50vw, 25vw" alt="Kurta sets" loading="lazy">
+      <div class="cat-label"><b>Kurta sets</b><small>Everyday to festive <i class='bx bx-right-arrow-alt'></i></small></div>
+    </a>
+    <a href="shop.html?cat=gown" class="cat reveal">
+      <img src="assets/img/27-960.jpg" srcset="assets/img/27-960.jpg 960w, assets/img/27-1920.jpg 1920w, assets/img/27-4k.jpg 3840w" sizes="(max-width:1000px) 50vw, 25vw" alt="Gowns" loading="lazy">
+      <div class="cat-label"><b>Gowns</b><small>Anarkali &amp; floor-length <i class='bx bx-right-arrow-alt'></i></small></div>
+    </a>
+    <a href="shop.html?cat=set" class="cat reveal">
+      <img src="assets/img/g11-960.jpg" srcset="assets/img/g11-960.jpg 960w, assets/img/g11-1920.jpg 1920w, assets/img/g11-4k.jpg 3840w" sizes="(max-width:1000px) 50vw, 25vw" alt="Co-ord sets" loading="lazy">
+      <div class="cat-label"><b>Co-ord sets</b><small>Matched top &amp; bottom <i class='bx bx-right-arrow-alt'></i></small></div>
+    </a>
+    <a href="shop.html?cat=bridal" class="cat reveal">
+      <img src="assets/img/g15-960.jpg" srcset="assets/img/g15-960.jpg 960w, assets/img/g15-1920.jpg 1920w, assets/img/g15-4k.jpg 3840w" sizes="(max-width:1000px) 50vw, 25vw" alt="Bridal" loading="lazy">
+      <div class="cat-label"><b>Bridal</b><small>Made to your measure <i class='bx bx-right-arrow-alt'></i></small></div>
+    </a>
+  </div>
+</section>
+
+<!-- ══ FEATURED ══ -->
+<section class="section tight wrap">
+  <div class="section-head">
+    <div class="eyebrow">Most ordered this season</div>
+    <h2 class="display-l">Pieces people come back for</h2>
+  </div>
+  <div id="featured"></div>
+  <div class="center" style="margin-top:46px">
+    <a href="shop.html" class="btn btn-line">View the whole collection</a>
+  </div>
+</section>
+
+<!-- ══ NUMBERS ══ -->
+<section class="section tight wrap">
+  <div class="stat-strip reveal">
+    <div class="stat-cell"><b data-count="9" data-suffix="">0</b><span>Years stitching</span></div>
+    <div class="stat-cell"><b data-count="14" data-suffix="">0</b><span>Karigars on the floor</span></div>
+    <div class="stat-cell"><b data-count="6200" data-suffix="+">0</b><span>Pieces delivered</span></div>
+    <div class="stat-cell"><b data-count="7" data-suffix=" days">0</b><span>Exchange window</span></div>
+  </div>
+</section>
+
+<!-- ══ PROCESS ══ -->
+<section class="section process">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">How a piece is made</div>
+      <h2 class="display-l">Four weeks, four hands</h2>
+      <p class="lede">These steps run in order. Nothing moves forward until the previous stage is signed off by the karigar who did it.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><span class="n">Week 01</span><h4>Fabric &amp; cut</h4>
+        <p>We buy in short lengths from mills in Surat and Bhuj, wash-test every roll for colour bleed, then cut to your size chart.</p></div>
+      <div class="step reveal"><span class="n">Week 02</span><h4>Frame &amp; embroider</h4>
+        <p>Panels go onto the aari frame. Zari, dabka and mirror work are done here — by hand, one motif at a time.</p></div>
+      <div class="step reveal"><span class="n">Week 03</span><h4>Stitch &amp; line</h4>
+        <p>Embroidered panels are joined, lined in soft cotton, and every edge is rolled rather than overlocked.</p></div>
+      <div class="step reveal"><span class="n">Week 04</span><h4>Finish &amp; check</h4>
+        <p>Pressed, measured against the original spec, photographed, and packed in a cotton bag with the karigar's name inside.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ BRIDAL SPLIT ══ -->
+<section class="section wrap">
+  <div class="split reveal">
+    <div class="split-img">
+      <img src="assets/img/g4-1920.jpg" srcset="assets/img/g4-960.jpg 960w, assets/img/g4-1920.jpg 1920w, assets/img/g4-4k.jpg 3840w" sizes="(max-width:1000px) 100vw, 52vw" alt="Bridal zardozi work in progress" loading="lazy">
+    </div>
+    <div class="split-copy">
+      <div class="eyebrow">Bridal, made to measure</div>
+      <h2 class="display-m">Book a fitting before you buy</h2>
+      <p class="lede">Bridal orders start with a call. We take fourteen measurements, agree the work, and send a fabric swatch before a single stitch goes in. You approve two fittings — one at the base stage, one after embroidery.</p>
+      <div class="stat-row">
+        <div class="stat"><b>200+</b><span>Hours per gown</span></div>
+        <div class="stat"><b>14</b><span>Measurements taken</span></div>
+        <div class="stat"><b>2</b><span>Fittings included</span></div>
+      </div>
+      <a href="contact.html" class="btn btn-solid">Book a bridal consultation</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ REVIEWS ══ -->
+<section class="section tight wrap">
+  <div class="section-head center">
+    <div class="eyebrow center">In their words</div>
+    <h2 class="display-l">What customers tell us</h2>
+  </div>
+  <div class="quote-grid">
+    <div class="quote reveal"><span class="stars">★★★★★</span>
+      <p>Ordered the zari kurta set for my sister's engagement. The zari is actual metal thread, not the plastic kind — you can tell the moment you hold it. They also let out the sleeve by an inch without charging me.</p>
+      <div class="quote-by"><div class="quote-av">RP</div><div><b>Riddhi Patel</b><small>Ahmedabad · verified order</small></div></div></div>
+    <div class="quote reveal"><span class="stars">★★★★★</span>
+      <p>I was nervous ordering a bridal gown online. They called me twice, sent a swatch, and the second fitting photo matched exactly what arrived. Delivered nine days before the date.</p>
+      <div class="quote-by"><div class="quote-av">SM</div><div><b>Sneha Mehta</b><small>Surat · verified order</small></div></div></div>
+    <div class="quote reveal"><span class="stars">★★★★☆</span>
+      <p>The cotton kurtas have survived a full summer of daily wear and the embroidery hasn't pulled once. Sizing runs a little generous, so I went one down on my second order.</p>
+      <div class="quote-by"><div class="quote-av">AJ</div><div><b>Anjali Joshi</b><small>Vadodara · verified order</small></div></div></div>
+  </div>
+</section>
+
+<!-- ══ NEWSLETTER ══ -->
+<section class="section tight wrap">
+  <div class="news reveal">
+    <div class="eyebrow center">Once a month, no more</div>
+    <h2 class="display-m">New pieces, before they go live</h2>
+    <p>We release a small batch on the first Saturday of every month. Subscribers see it a day early, which matters when there are only forty of something.</p>
+    <form class="news-form" id="news-form">
+      <input type="email" id="news-email" placeholder="you@email.com" required aria-label="Email address">
+      <button class="btn btn-gold" type="submit">Notify me</button>
+    </form>
+  </div>
+</section>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/brand.js"></script>
+<script src="assets/js/qr.js"></script>
+<script src="assets/js/carousel.js"></script>
+<script src="assets/js/payments.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/fx.js"></script>
+<script>
+JMC.boot('index.html');
+
+/* strip */
+const lines = ['Free delivery over ₹2,999','7-day easy exchange','Real zari &amp; abhla work',
+  'Made in Maninagar, Ahmedabad','Sizes S to XXL','Cash on delivery available'];
+document.getElementById('strip').innerHTML =
+  [...lines, ...lines].map(t => `<span><i class='bx bx-diamond'></i>${t}</span>`).join('');
+
+/* hero carousel — four rooms of the atelier */
+JMCCarousel.hero('#hero', [
+  { img:'g3-hd', alt:'Hand-embroidered gown from the atelier',
+    eyebrow:'Atelier · Ahmedabad, est. 2016',
+    title:'Every thread', titleEm:'placed by hand.',
+    text:'Kurta sets, gowns and bridal wear cut and embroidered in our own workshop in Maninagar. Small runs, real zari, and a fit we will adjust for you before it ships.',
+    ctaHref:'shop.html', ctaText:'Shop the collection',
+    altHref:'gallery.html', altText:'See the atelier' },
+  { img:'27', alt:'Anarkali gown with zari border',
+    eyebrow:'The gown room',
+    title:'Georgette that', titleEm:'moves with you.',
+    text:'Floor-length Anarkalis with hand-stitched zari borders and a cotton lining that survives a full evening of dancing.',
+    ctaHref:'shop.html?cat=gown', ctaText:'See the gowns',
+    altHref:'product.html?sku=JMC-AG-002', altText:'This season\u2019s bestseller' },
+  { img:'g13', alt:'Bridal lehenga detail',
+    eyebrow:'Bridal · by appointment',
+    title:'Six weeks,', titleEm:'four fittings.',
+    text:'Bridal pieces are drawn with you, cut for your measurements, and finished by the same karigar from first stitch to last.',
+    ctaHref:'shop.html?cat=bridal', ctaText:'Bridal collection',
+    altHref:'contact.html', altText:'Book a fitting' },
+  { img:'g11', alt:'Handloom co-ord set',
+    eyebrow:'Everyday pieces',
+    title:'Handloom cotton', titleEm:'you can wash at home.',
+    text:'Co-ord sets in slubby cotton silk with real mirror buttons and pockets deep enough to be useful.',
+    ctaHref:'shop.html?cat=set', ctaText:'Co-ord sets',
+    altHref:'about.html', altText:'Our story' }
+]);
+
+/* featured — a rail you can push through */
+const feat = JMC.products().slice().sort((a,b) => b.rating - a.rating).slice(0,8);
+document.getElementById('featured').innerHTML = feat.map(JMC.cardHTML).join('');
+JMCCarousel.rail('#featured');
+JMC.wireCards();
+JMC.revealOnScroll();
+if (window.JMCFX) JMCFX.refresh();
+
+document.getElementById('news-form').onsubmit = e => {
+  e.preventDefault();
+  const v = document.getElementById('news-email').value.trim();
+  JMC.addMessage({ name:'Newsletter', email:v, subject:'Newsletter signup', body:'Wants the monthly release list.' });
+  JMC.toast('You are on the list — see you on the first Saturday', 'ok');
+  e.target.reset();
+};
+
+JMC.renderFooter();
+</script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Atelier — Jay Mataji Creation</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/luxe.css">
+<style>
+.masonry{columns:3;column-gap:18px;}
+.mitem{break-inside:avoid;margin-bottom:18px;position:relative;overflow:hidden;
+  border-radius:var(--radius);cursor:zoom-in;background:var(--surface-2);border:1px solid var(--line);}
+.mitem img{width:100%;display:block;transition:transform .8s cubic-bezier(.3,0,.2,1);}
+.mitem:hover img{transform:scale(1.05);}
+.mcap{position:absolute;inset:auto 0 0 0;padding:36px 20px 18px;color:#fff;
+  background:linear-gradient(to top,rgba(18,10,20,.88),transparent);
+  opacity:0;transform:translateY(12px);transition:.35s;}
+.mitem:hover .mcap{opacity:1;transform:none;}
+.mcap b{font-family:var(--f-display);font-size:18px;font-weight:500;display:block;}
+.mcap small{font-family:var(--f-mono);font-size:9px;letter-spacing:.18em;
+  text-transform:uppercase;color:#E4C879;}
+.gtabs{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:32px;}
+.gtab{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+  padding:9px 18px;border:1px solid var(--line-2);border-radius:22px;cursor:pointer;
+  background:var(--surface);transition:.25s;}
+.gtab.on{background:var(--btn-bg);color:var(--btn-fg);border-color:var(--btn-bg);}
+.lb{position:fixed;inset:0;z-index:1100;background:rgba(12,7,14,.95);
+  display:none;align-items:center;justify-content:center;padding:44px;}
+.lb.open{display:flex;}
+.lb img{max-width:100%;max-height:100%;object-fit:contain;border-radius:2px;
+  animation:lbIn .35s cubic-bezier(.3,1.3,.5,1);}
+@keyframes lbIn{from{opacity:0;transform:scale(.94);}to{opacity:1;transform:none;}}
+.lb-x,.lb-prev,.lb-next{position:absolute;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.24);
+  color:#fff;width:48px;height:48px;border-radius:50%;cursor:pointer;font-size:24px;
+  display:grid;place-items:center;transition:.25s;}
+.lb-x:hover,.lb-prev:hover,.lb-next:hover{background:#E4C879;color:#231a10;border-color:#E4C879;}
+.lb-x{top:26px;right:26px;} .lb-prev{left:26px;top:50%;transform:translateY(-50%);}
+.lb-next{right:26px;top:50%;transform:translateY(-50%);}
+.lb-cap{position:absolute;bottom:24px;left:0;right:0;text-align:center;color:#fff;}
+.lb-cap b{font-family:var(--f-display);font-size:19px;display:block;}
+.lb-cap small{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.2em;color:#E4C879;}
+@media(max-width:900px){.masonry{columns:2;column-gap:12px;}.mitem{margin-bottom:12px;}
+  .mcap{opacity:1;transform:none;}.lb{padding:16px;}
+  .lb-prev,.lb-next{width:40px;height:40px;font-size:20px;}}
+@media(max-width:520px){.masonry{columns:1;}}
+</style>
+</head>
+<body>
+
+<section class="page-hero"><div class="wrap">
+  <div class="crumbs"><a href="index.html">Home</a> / The Atelier</div>
+  <h1 class="display-l">Inside the atelier</h1>
+  <p class="lede" style="margin-top:14px">Photographs from our workshop in Maninagar and from customer fittings. Every image here is a 4K original — click to open it full size.</p>
+</div></section>
+
+<section class="section tight wrap">
+  <div class="gtabs" id="gtabs"></div>
+  <div class="masonry" id="masonry"></div>
+</section>
+
+<div class="lb" id="lb" role="dialog" aria-label="Photo viewer">
+  <button class="lb-x" id="lb-x" aria-label="Close"><i class='bx bx-x'></i></button>
+  <button class="lb-prev" id="lb-prev" aria-label="Previous"><i class='bx bx-chevron-left'></i></button>
+  <img id="lb-img" alt="">
+  <button class="lb-next" id="lb-next" aria-label="Next"><i class='bx bx-chevron-right'></i></button>
+  <div class="lb-cap" id="lb-cap"></div>
+</div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/brand.js"></script>
+<script src="assets/js/qr.js"></script>
+<script src="assets/js/carousel.js"></script>
+<script src="assets/js/payments.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/fx.js"></script>
+<script>
+JMC.boot('gallery.html');
+
+const SHOTS = [
+  { f:'g3-hd', t:'Zari border, close', c:'work', s:'3840 × 2560' },
+  { f:'g4',    t:'Bridal panel on the frame', c:'work', s:'3840 × 3610' },
+  { f:'g15',   t:'Abhla mirrors, hand-set', c:'work', s:'3840 × 3360' },
+  { f:'g11',   t:'Fitting room, Maninagar', c:'studio', s:'3840 × 3072' },
+  { f:'g6',    t:'Fabric library', c:'studio', s:'3840 × 2560' },
+  { f:'g12',   t:'Cutting table, Monday morning', c:'studio', s:'3840 × 2150' },
+  { f:'g13',   t:'Salwar set, finished', c:'pieces', s:'3840 × 2743' },
+  { f:'g14',   t:'Co-ord set on the rail', c:'pieces', s:'3840 × 2880' },
+  { f:'g8',    t:'Aari work on mulberry silk', c:'work', s:'3840 × 2880' },
+  { f:'10',    t:'Morning light on the rail', c:'studio', s:'3840 × 2161' },
+  { f:'27',    t:'Anarkali, full flare', c:'pieces', s:'3840 × 2980' },
+  { f:'11',    t:'Banarasi butis, woven', c:'pieces', s:'3840 × 2970' },
+  { f:'6',     t:'Appliqué shoulder', c:'work', s:'3840 × 3008' },
+  { f:'3',     t:'Zardozi neckline', c:'work', s:'3840 × 2899' },
+  { f:'g3',    t:'Velvet bodice, stones set', c:'pieces', s:'3840 × 2560' }
+];
+const CATS = { all:'Everything', work:'Hand work', studio:'The studio', pieces:'Finished pieces' };
+let cat = 'all', shown = SHOTS, i = 0;
+
+document.getElementById('gtabs').innerHTML = Object.entries(CATS).map(([k,l]) =>
+  `<button class="gtab ${k==='all'?'on':''}" data-g="${k}">${l}</button>`).join('');
+
+function paint(){
+  shown = cat === 'all' ? SHOTS : SHOTS.filter(s => s.c === cat);
+  document.getElementById('masonry').innerHTML = shown.map((s,n) => `
+    <figure class="mitem" data-i="${n}">
+      <img src="assets/img/${s.f}-960.jpg"
+           srcset="assets/img/${s.f}-960.jpg 960w, assets/img/${s.f}-1920.jpg 1920w"
+           sizes="(max-width:520px) 100vw, (max-width:900px) 50vw, 33vw"
+           alt="${JMC.esc(s.t)}" loading="lazy">
+      <figcaption class="mcap"><b>${JMC.esc(s.t)}</b><small>${s.s} · 4K</small></figcaption>
+    </figure>`).join('');
+  document.querySelectorAll('[data-i]').forEach(el => el.onclick = () => open(+el.dataset.i));
+}
+document.querySelectorAll('[data-g]').forEach(b => b.onclick = () => {
+  cat = b.dataset.g;
+  document.querySelectorAll('.gtab').forEach(x => x.classList.toggle('on', x === b));
+  paint();
+});
+
+const lb = document.getElementById('lb'), lbImg = document.getElementById('lb-img'), lbCap = document.getElementById('lb-cap');
+function open(n){ i = n; show(); lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
+function show(){ const s = shown[i];
+  lbImg.src = 'assets/img/' + s.f + '-4k.jpg'; lbImg.alt = s.t;
+  lbCap.innerHTML = `<b>${JMC.esc(s.t)}</b><small>${s.s} · original 4K file</small>`; }
+function close(){ lb.classList.remove('open'); document.body.style.overflow = ''; }
+document.getElementById('lb-x').onclick = close;
+lb.onclick = e => { if (e.target === lb) close(); };
+document.getElementById('lb-prev').onclick = e => { e.stopPropagation(); i = (i - 1 + shown.length) % shown.length; show(); };
+document.getElementById('lb-next').onclick = e => { e.stopPropagation(); i = (i + 1) % shown.length; show(); };
+document.addEventListener('keydown', e => {
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') close();
+  if (e.key === 'ArrowLeft') { i = (i - 1 + shown.length) % shown.length; show(); }
+  if (e.key === 'ArrowRight') { i = (i + 1) % shown.length; show(); }
+});
+
+paint();
+JMC.renderFooter();
+</script>
+</body>
+</html>
