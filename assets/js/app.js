@@ -41,7 +41,7 @@ async function hash(txt){
 }
 
 /* ── money / ids ─────────────────────────── */
-const rs  = n => '₹' + Number(n||0).toLocaleString('en-IN');
+const rs  = n => '৳' + Number(n||0).toLocaleString('en-IN');
 const uid = p => p + '-' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2,6).toUpperCase();
 const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -62,14 +62,14 @@ async function seedAdmin(){
   const u = users();
   if (!u.some(x => x.role === 'admin')) {
     u.push({
-      id: uid('U'), name:'Store Admin', email:'admin@jaymataji.com',
-      phone:'+91 98250 00000', pass: await hash('Mataji@2026'),
+      id: uid('U'), name:'Store Admin', email:'admin@Raiyan.com',
+      phone:'+01873848214', pass: await hash('Raiyan@2026'),
       role:'admin', createdAt: Date.now(), addresses:[]
     });
     localStorage.setItem(K.users, JSON.stringify(u));
   }
 }
-
+// admin@jaymataji.com.....Mataji@2026 ....91 98250 00000
 async function signup({name,email,phone,password}){
   email = String(email||'').trim().toLowerCase();
   name  = String(name||'').trim();
@@ -420,14 +420,14 @@ function renderFooter(){
       <a href="profile.html">My profile</a><a href="orders.html">Track an order</a>
       <a href="wishlist.html">Wishlist</a><a href="cart.html">My bag</a><a href="login.html">Sign in</a></div>
     <div class="foot-col"><h5>Reach us</h5>
-      <p><i class='bx bx-map'></i> Maninagar, Ahmedabad, Gujarat 380008</p>
-      <p><i class='bx bx-phone'></i> +91 98250 00000</p>
-      <p><i class='bx bx-envelope'></i> care@jaymataji.com</p>
+      <p><i class='bx bx-map'></i> Uttara, Dhaka, Bangladesh 🇧🇩</p>
+      <p><i class='bx bx-phone'></i> 01873848214</p>
+      <p><i class='bx bx-envelope'></i>arizraiayan.bd@gmail.com</p>
       <p><i class='bx bx-time'></i> Mon–Sat, 10am–8pm IST</p></div>
   </div>
   <div class="foot-bottom">
     <span>© ${new Date().getFullYear()} Jay Mataji Creation · Handmade in Gujarat</span>
-    <span>Free delivery over ₹2,999 · 7-day exchange ·
+    <span>Free delivery over ৳2,999 · 7-day exchange ·
       <a href="#" id="replay-intro" style="color:var(--gold)">Play the opening again</a></span>
   </div></div>`;
   document.body.appendChild(f);

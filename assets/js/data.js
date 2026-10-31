@@ -1,4 +1,4 @@
-/* Jay Mataji Creation — catalogue seed */
+/* Raiyan Creation — catalogue seed */
 window.JMC_SEED_PRODUCTS = [
 { sku:'JMC-KP-001', name:'Kurta Palazzo Set', cat:'kurta', price:1000, mrp:1400, img:'25',
   badge:'New', badgeTone:'teal', rating:4.4, reviews:128, stock:14,
