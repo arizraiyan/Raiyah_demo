@@ -78,7 +78,7 @@ JMC.boot('shop.html');
 
 let step = 1;           // 1 bag · 2 address · 3 payment · 4 done
 let placed = null;
-const addr = { name:'', phone:'', line1:'', city:'', state:'Gujarat', pin:'', landmark:'' };
+const addr = { name:'', phone:'', line1:'', city:'', state:'Dhaka', pin:'', landmark:'' };
 let payMethod = 'cod';
 
 function totals(){
@@ -178,7 +178,7 @@ function render(){
           </select></div>` : ''}
         <div class="two">
           <div class="field"><label>Full name</label><input class="input" id="a-name" value="${JMC.esc(addr.name)}" placeholder="Riddhi Patel"></div>
-          <div class="field"><label>Mobile number</label><input class="input" id="a-phone" value="${JMC.esc(addr.phone)}" placeholder="98250 00000"></div>
+          <div class="field"><label>Mobile number</label><input class="input" id="a-phone" value="${JMC.esc(addr.phone)}" placeholder="01873848214"></div>
         </div>
         <div class="field"><label>Flat, building, street</label>
           <input class="input" id="a-line1" value="${JMC.esc(addr.line1)}" placeholder="B-402, Shreeji Residency, Bhairavnath Road"></div>
@@ -242,10 +242,6 @@ function render(){
         </div>
 
         <div class="pay-logos">
-          <span class="pl"><i class='bx bx-qr-scan'></i> UPI</span>
-          <span class="pl"><i class='bx bx-credit-card-front'></i> Visa · Mastercard · RuPay</span>
-          <span class="pl"><i class='bx bx-building-house'></i> Netbanking</span>
-          <span class="pl"><i class='bx bx-wallet'></i> Wallets</span>
           <span class="pl"><i class='bx bx-money'></i> Cash on delivery</span>
         </div>
 

@@ -114,10 +114,6 @@ function open({ amount, orderRef, onDone }){
 
       <div class="pay-body">
         <nav class="pay-tabs" role="tablist">
-          <button class="pay-tab on" data-tab="upi"  role="tab"><i class='bx bx-qr-scan'></i><span>UPI</span><small>Instant</small></button>
-          <button class="pay-tab"    data-tab="card" role="tab"><i class='bx bx-credit-card-front'></i><span>Card</span><small>Debit / credit</small></button>
-          <button class="pay-tab"    data-tab="bank" role="tab"><i class='bx bx-building-house'></i><span>Netbanking</span><small>10 banks</small></button>
-          <button class="pay-tab"    data-tab="wallet" role="tab"><i class='bx bx-wallet'></i><span>Wallet</span><small>Paytm, PhonePe</small></button>
           <button class="pay-tab"    data-tab="cod"  role="tab"><i class='bx bx-money'></i><span>Cash</span><small>On delivery</small></button>
         </nav>
         <div class="pay-pane" id="pay-pane"></div>

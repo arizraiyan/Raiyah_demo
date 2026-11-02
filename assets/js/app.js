@@ -1,7 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   Raihan Islam— Core engine
-   Store · Auth · Cart · Orders · Real-time sync · UI shell
-   ═══════════════════════════════════════════════════════════ */
+
 (function () {
 'use strict';
 
@@ -58,18 +55,59 @@ function saveProducts(list){ write(K.products, list); }
 function users(){ return read(K.users, []); }
 function session(){ return read(K.session, null); }
 
+/* Admin credentials
+   Email  : admin@Raiyan.com  (stored lowercase, because login() lowercases the input)
+   Password: Raiyan@2026                                                            */
+const ADMIN_EMAIL = 'admin@raiyan.com';
+const ADMIN_PASS  = 'Raiyan@2026';
+const ADMIN_PHONE = '+01873848214';
+
 async function seedAdmin(){
-  const u = users();
-  if (!u.some(x => x.role === 'admin')) {
-    u.push({
-      id: uid('U'), name:'Store Admin', email:'admin@Raiyan.com',
-      phone:'+01873848214', pass: await hash('Raiyan@2026'),
+  // Hash first (async), then read + write users synchronously so that
+  // two pages/tabs booting together can't create a duplicate admin.
+  const passHash = await hash(ADMIN_PASS);
+  const list = users();
+
+  // 1) account that already uses the admin email  2) any existing admin
+  let i = list.findIndex(x => String((x && x.email) || '').trim().toLowerCase() === ADMIN_EMAIL);
+  if (i < 0) i = list.findIndex(x => x && x.role === 'admin');
+
+  if (i < 0) {
+    // no admin at all → create exactly one
+    list.push({
+      id: uid('U'), name:'Store Admin', email: ADMIN_EMAIL,
+      phone: ADMIN_PHONE, pass: passHash,
       role:'admin', createdAt: Date.now(), addresses:[]
     });
-    localStorage.setItem(K.users, JSON.stringify(u));
+    localStorage.setItem(K.users, JSON.stringify(list));
+    return;
+  }
+
+  // existing account → update in place (same id, everything else untouched)
+  const a = list[i];
+  if (a.email !== ADMIN_EMAIL || a.pass !== passHash || a.role !== 'admin') {
+    list[i] = {
+      ...a,
+      name:  a.name  || 'Store Admin',
+      email: ADMIN_EMAIL,
+      phone: a.phone || ADMIN_PHONE,
+      pass:  passHash,
+      role:  'admin',
+      addresses: Array.isArray(a.addresses) ? a.addresses : []
+    };
+    localStorage.setItem(K.users, JSON.stringify(list));
+
+    // keep an already-open admin session in sync
+    const s = session();
+    if (s && s.id === list[i].id) {
+      localStorage.setItem(K.session, JSON.stringify({
+        id:list[i].id, name:list[i].name, email:list[i].email,
+        role:list[i].role, phone:list[i].phone
+      }));
+    }
   }
 }
-// admin@jaymataji.com.....Mataji@2026 ....91 98250 00000
+
 async function signup({name,email,phone,password}){
   email = String(email||'').trim().toLowerCase();
   name  = String(name||'').trim();
